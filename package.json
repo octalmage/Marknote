@@ -1,0 +1,13 @@
+{
+  "name": "MarkNote",
+  "main": "index.html",
+  "window": {
+    "title": "Mark Note",
+    "toolbar": false,
+    "frame": true
+  },
+  "chromium-args": "--disable-web-security",
+  "dependencies": {
+    "marked": "~0.3.2"
+  }
+}
