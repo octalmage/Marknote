@@ -15,17 +15,13 @@ var store=new Lawnchair(function()
 
 
 
-
-
 $(document).on("ready",function()
 {
 	var gui = require('nw.gui'); 
 	var win = gui.Window.get();
 
-
-
 	//Show Chrome debug console.
-	win.showDevTools();
+	//win.showDevTools();
 
 	$("#display").html(markdown);
 
