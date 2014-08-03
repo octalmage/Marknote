@@ -5,6 +5,7 @@
   <title>Mark Note</title>
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
+  <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/monokai.min.css">
 
  <script src="components/platform/platform.js"></script>
 
@@ -30,10 +31,11 @@
   
 
   <style>
-  html,body {
+  body {
     height: 100%;
     width:100%;
     margin: 0;
+    overflow:hidden;
     background-color: #E5E5E5;
     font-family: 'RobotoDraft', sans-serif;
   }
@@ -47,6 +49,8 @@
   #display
   {
     padding-left:10px;
+    padding-right: 10px;
+    overflow:scroll;
   }
 
   #edit, #note, #noteedit
@@ -69,23 +73,43 @@
 
   #note
   {
-    position: fixed;
+    position: absolute;
     left:200px;
     top:0px;
     background-color:#fff;
+    overflow:scroll;
     /*background-image: url('img/paper_fibers.png');*/
   }
 
   #list
   {
     padding-top:10px;
-    position: fixed;
+    position: absolute;
     top: 0px;
     left: 0px;
     width: 200px;
     /*background-color: #12131c; */
     background-color: #F9F9F9;
     height: 100%;
+    overflow: hidden;
+  }
+/*
+  #code
+  {
+    margin-left:-10px !important;
+    color: #fff;
+    padding:5px;
+    background-color: #272822;
+  }
+  */
+ 
+  pre
+  {
+    overflow:hidden;
+    margin-left:-10px !important;
+    color: #fff;
+    padding:5px;
+    background-color: #272822;
   }
   
  
