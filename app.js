@@ -1,6 +1,6 @@
 var marked = require('marked');
 var highlight = require('highlight.js');
-
+var editor;
 
 
 //Custom Renderer
@@ -73,15 +73,18 @@ $(document).on("ready",function()
 		{
 			//Unselect text from doubleclick. 
 			window.getSelection().removeAllRanges()
-			$("#noteedit").val(note);
+			//$("#noteedit").val(note);
+			editor.setValue(note);
 			$("#display").css("display","none");
 			$("#edit").css("display", "block");
 
 			//Put cursor at end of textarea.  
 			setTimeout(function()
 			{
-				$("#noteedit").focus();
-				$("#noteedit")[0].selectionStart = $("#noteedit")[0].selectionEnd = $("#noteedit")[0].value.length
+				//$("#noteedit").focus();
+				//$("#noteedit")[0].selectionStart = $("#noteedit")[0].selectionEnd = $("#noteedit")[0].value.length
+				editor.clearSelection();
+
 			},1)
 
 		}
@@ -89,7 +92,8 @@ $(document).on("ready",function()
 		{	
 			//unselect text from doubleclick. 
 			window.getSelection().removeAllRanges()
-			note=$("#noteedit").val();
+			//note=$("#edit").text();
+			note=editor.getValue();
 			markdown=marked(note);
 			$("#display").html(markdown);
 			$("#edit").css("display", "none");

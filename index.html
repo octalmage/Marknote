@@ -132,9 +132,16 @@
   </div>
 
   <div id="edit">
-  <textarea id="noteedit"></textarea>
+  <!--<textarea id="noteedit"></textarea>-->
   </div>
 
 
   </div>
+<script src="js/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    editor = ace.edit("edit");
+    editor.setTheme("ace/theme/monokai");
+    editor.getSession().setMode("ace/mode/markdown");
+    </script>
+</body>
 </html>
