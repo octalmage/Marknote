@@ -5,7 +5,7 @@
   <title>Mark Note</title>
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
-  <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/monokai.min.css">
+  <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css">
 
  <script src="components/platform/platform.js"></script>
 
@@ -107,9 +107,10 @@
   {
     overflow:hidden;
     margin-left:-10px !important;
-    color: #fff;
+    color: #000;
     padding:5px;
-    background-color: #272822;
+    /*background-color: #272822; monokai */
+    background-color: #f8f8f8;
   }
   
  
@@ -140,7 +141,7 @@
 <script src="js/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 <script>
     editor = ace.edit("edit");
-    editor.setTheme("ace/theme/monokai");
+    editor.setTheme("ace/theme/github");
     editor.getSession().setMode("ace/mode/markdown");
     </script>
 </body>
