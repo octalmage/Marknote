@@ -1,6 +1,6 @@
 <link rel="import" href="../components/polymer/polymer.html">
 
-<polymer-element name="list-item" noscript>
+<polymer-element name="list-item" attributes="id" noscript>
   <template>
   	<style> 
 		.listitem
@@ -13,7 +13,7 @@
 		}
   	</style>
   
-  <div class="listitem">
+  <div class="listitem" id="{{id}}">
   <content></content>
   </div>
   </template>

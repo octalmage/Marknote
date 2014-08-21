@@ -1,8 +1,21 @@
+var gui = require('nw.gui'); 
+var win = gui.Window.get();
+
+var mb = new gui.Menu({type:"menubar"});
+mb.createMacBuiltin("Chimera");
+win.menu = mb;
+
+//Show Chrome debug console.
+win.showDevTools();
+
+
+
 var marked = require('marked');
 var highlight = require('highlight.js');
 var editor;
 var store;
-var notes=new Array();
+var notes=new Array(), note="";
+var current=0;
 
 
 
@@ -48,9 +61,14 @@ marked.setOptions({
 
 
 
-
-
-
+$(document).on("click", "list-item", function()
+{
+	loadNote($(this).attr("id"));
+});
+$(document).on("click", "#newNote", function()
+{
+	newNote();
+})
 
 
 $(document).on("ready",function()
@@ -61,30 +79,28 @@ $(document).on("ready",function()
 	}, function ()
 	{})
 
-	///store.save({key:'notes', notes:["test", "test"]});
-
-	store.get("notes", function (n)
+//store.save({key:'notes', notes:["test", "test"]});
+store.exists("notes", function (s)
+{
+	console.log(s)
+	if (s===false)
 	{
-		if (n.notes)
+		store.save({key:'notes', notes:["test", "test"]});
+		n.notes=["test", "test"];
+	}
+	else
+	{
+		store.get("notes", function (n)
 		{
 			notes=n.notes;
-		}
-		else
-		{
-			note="#I am using#\n**markdown**.";
-		}
+			updateList();
+		});
 		//notes=n.notes;
 		console.log(notes)
-	});
+	}
+});
 
-	note="#I am using#\n**markdown**."
-	var gui = require('nw.gui'); 
-	var win = gui.Window.get();
-
-	//Show Chrome debug console.
-	win.showDevTools();
-
-	note=notes[0];
+	note=notes[current];
 	markdown=marked(note, { renderer: renderer });
 
 	$("#display").html(markdown);
@@ -120,9 +136,42 @@ $(document).on("ready",function()
 			$("#display").html(markdown);
 			$("#edit").css("display", "none");
 			$("#display").css("display","block");
-			notes[0]=note;
+			notes[current]=note;
 			store.save({key:'notes', notes:notes});
+			updateList()
 
 		}
 	})
 });
+
+function updateList()
+{
+	$("#list").html("");
+	for (i in notes)
+	{
+		addNote(notes[i].split("\n")[0], i);
+	}
+	$("#list").append("<br><div style='float:right;'><button id='newNote'>New Note</button></div>");
+}
+
+
+function addNote(note, id)
+{
+	template="<list-item id=\"{{id}}\">{{note}}</list-item>";
+	item=template.replace("{{note}}", note.replace(/\W+/g, " ")).replace("{{id}}", id);
+	$("#list").append(item);
+}
+
+function loadNote(id)
+{
+	current=id;
+	markdown=marked(notes[id]);
+	$("#display").html(markdown);
+	note=notes[id];
+}
+function newNote()
+{
+	notes.push("# New note");
+	updateList();
+	loadNote(notes.length-1);
+}
