@@ -6,7 +6,7 @@ mb.createMacBuiltin("Chimera");
 win.menu = mb;
 
 //Show Chrome debug console.
-win.showDevTools();
+//win.showDevTools();
 
 
 
@@ -16,19 +16,19 @@ var editor;
 var store;
 var notes=new Array(), note="";
 var current=0;
-
+var defaultnote=["#Welcome to Marknote\n**Clean, easy, markdown notes.**\nDouble click to get started!"];
 
 
 //Custom Renderer
 var renderer = new marked.Renderer();
 
 //Custom links, going to use for internal links!
-renderer.link = function (href, title, text) 
+/*renderer.link = function (href, title, text) 
 {
 	output="<a target=\"_blank\" style='color:pink;' href=\"" + href + "\">" + text + "</a>";
 
 	return output;
-}
+}*/
 
 /*
 renderer.code = function (code, language)
@@ -82,24 +82,26 @@ $(document).on("ready",function()
 //store.save({key:'notes', notes:["test", "test"]});
 store.exists("notes", function (s)
 {
-	console.log(s)
+	console.log("s: " + s);
 	if (s===false)
 	{
-		store.save({key:'notes', notes:["test", "test"]});
-		n.notes=["test", "test"];
+		store.save({key:'notes', notes: defaultnote});
+		notes=defaultnote;
 	}
 	else
 	{
+		
 		store.get("notes", function (n)
 		{
 			notes=n.notes;
-			updateList();
+			
 		});
 		//notes=n.notes;
 		console.log(notes)
+		
 	}
 });
-
+	updateList();
 	note=notes[current];
 	markdown=marked(note, { renderer: renderer });
 
@@ -151,7 +153,7 @@ function updateList()
 	{
 		addNote(notes[i].split("\n")[0], i);
 	}
-	$("#list").append("<br><div style='float:right;'><button id='newNote'>New Note</button></div>");
+	$("#list").append("<br><div style='float: right; padding-right:5px;'><button id='newNote'>New Note</button></div>");
 }
 
 
