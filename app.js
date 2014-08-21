@@ -1,6 +1,9 @@
 var marked = require('marked');
 var highlight = require('highlight.js');
 var editor;
+var store;
+var notes=new Array();
+
 
 
 //Custom Renderer
@@ -41,29 +44,48 @@ marked.setOptions({
   }
 });
 
-note="#I am using#\n**markdown**.";
-markdown=marked(note, { renderer: renderer });
 
-var store=new Lawnchair(function()
-{
 
-    this.get('notes', function(notes) 
-    {
-       console.log(notes)
-    })
 
-    this.save({key:'notes',notes:note})
-})
+
+
+
 
 
 
 $(document).on("ready",function()
 {
+	store = new Lawnchair(
+	{
+		adapter: "dom"
+	}, function ()
+	{})
+
+	///store.save({key:'notes', notes:["test", "test"]});
+
+	store.get("notes", function (n)
+	{
+		if (n.notes)
+		{
+			notes=n.notes;
+		}
+		else
+		{
+			note="#I am using#\n**markdown**.";
+		}
+		//notes=n.notes;
+		console.log(notes)
+	});
+
+	note="#I am using#\n**markdown**."
 	var gui = require('nw.gui'); 
 	var win = gui.Window.get();
 
 	//Show Chrome debug console.
 	win.showDevTools();
+
+	note=notes[0];
+	markdown=marked(note, { renderer: renderer });
 
 	$("#display").html(markdown);
 
@@ -98,6 +120,8 @@ $(document).on("ready",function()
 			$("#display").html(markdown);
 			$("#edit").css("display", "none");
 			$("#display").css("display","block");
+			notes[0]=note;
+			store.save({key:'notes', notes:notes});
 
 		}
 	})
