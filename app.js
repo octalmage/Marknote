@@ -139,6 +139,9 @@ store.exists("notes", function (s)
 			$("#edit").css("display", "none");
 			$("#display").css("display","block");
 			notes[current]=note;
+			//Move note to the top!
+			notes.splice(0, 0, notes.splice(current, 1)[0]); 
+			current=0;
 			store.save({key:'notes', notes:notes});
 			updateList()
 
