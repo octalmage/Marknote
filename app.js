@@ -51,8 +51,6 @@ marked.setOptions({
   smartypants: true,
   highlight: function (code)  //use highlight.js for syntax highlighting. 
   {
-  	console.log(code);
-  	console.log(highlight.highlightAuto(code).value);
     return highlight.highlightAuto(code).value;
   }
 });
