@@ -153,9 +153,11 @@ function updateList()
 	{
 		addNote(notes[i].split("\n")[0], i);
 	}
-	$("#list").append("<br><div style='float: right; padding-right:5px;'><button id='newNote'>New Note</button></div>");
+	//$("#list").append("<br><div style='float: right; padding-right:5px;'><paper-button raisedButton class='colored' label='New Note'></paper-button></div>");
+	$("#list").append("<br><div style='position: absolute; bottom: 25px;  right:25px;'><paper-fab id=\"newNote\" icon=\"create\" class=\"blue mini\"></paper-fab></div>");
+	
 }
-
+ 
 
 function addNote(note, id)
 {
