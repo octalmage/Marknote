@@ -9,10 +9,10 @@
 
  <script src="components/platform/platform.js"></script>
 
-<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script src="js/lawnchair.js"></script>
-<script src="app.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+  <script src="js/lawnchair.js"></script>
+  <script src="app.js"></script>
 
 
   <link rel="import" href="components/polymer/polymer.html">
@@ -23,6 +23,10 @@
   <link rel="import" href="components/core-icons/core-icons.html">
   <link rel="import" href="components/paper-fab/paper-fab.html">
   <link rel="import" href="components/paper-icon-button/paper-icon-button.html">
+
+  <link rel="import" href="components/paper-fab/paper-fab.html">
+
+
   <!--<link rel="import" href="components/core-drawer-panel/core-drawer-panel.html">
   <link rel="import" href="components/core-animated-pages/core-animated-pages.html">
   <link rel="import" href="components/core-scaffold/core-scaffold.html">-->
@@ -52,6 +56,7 @@
   {
     padding-left:10px;
     padding-right: 10px;
+    z-index: 2;
   }
 
   #display, #note, #edit
@@ -106,6 +111,15 @@
     overflow-y: scroll;
     overflow-x: hidden;
   }
+
+  #actions
+  {
+    position: fixed; 
+    top: 0px;
+    right: 0px;
+    display: none;
+    z-index: 5;
+  }
 /*
   #code
   {
@@ -153,6 +167,8 @@
     editor.setShowPrintMargin(false);
     </script>
 
-
+<div id="actions">
+<paper-icon-button icon="close"></paper-icon-button>
+</div>
 </body>
 </html>
