@@ -17,6 +17,7 @@ var store;
 var notes=new Array(), note="";
 var current=0;
 var defaultnote=["#Welcome to Marknote\n**Clean, easy, markdown notes.**\nDouble click to get started!"];
+var newnotetemplate="# New note";
 
 
 //Custom Renderer
@@ -68,6 +69,21 @@ $(document).on("click", "#newNote", function()
 	newNote();
 })
 
+$(document).on("mousemove", function(e)
+{
+	if (!displayShowing())
+	{
+		return;
+	}
+	if (e.pageX>(window.innerWidth-200) && e.pageY < 50)
+	{
+		$("#actions").show();
+	}
+	else
+	{
+		$("#actions").hide();
+	}
+});
 
 $(document).on("ready",function()
 {
@@ -99,23 +115,29 @@ store.exists("notes", function (s)
 		
 	}
 });
+
+
+
 	updateList();
 	note=notes[current];
 	markdown=marked(note, { renderer: renderer });
 
 	$("#display").html(markdown);
 
+
+	$("paper-icon-button[icon='close']").on("click", function()
+	{
+		deleteNote(current);
+	});
+
 	$("#note").on("dblclick", function()
 	{
-		if ($("#edit").css("display")=="none")
+		if (displayShowing())
 		{
 			//Unselect text from doubleclick. 
 			window.getSelection().removeAllRanges()
-			//$("#noteedit").val(note);
 			editor.setValue(note);
-			$("#display").css("display","none");
-			$("#edit").css("display", "block");
-
+			switchDisplay("edit");
 			//Put cursor at end of textarea.  
 			setTimeout(function()
 			{
@@ -134,18 +156,36 @@ store.exists("notes", function (s)
 			note=editor.getValue();
 			markdown=marked(note);
 			$("#display").html(markdown);
-			$("#edit").css("display", "none");
-			$("#display").css("display","block");
+			switchDisplay("display");
 			notes[current]=note;
 			//Move note to the top!
 			notes.splice(0, 0, notes.splice(current, 1)[0]); 
 			current=0;
-			store.save({key:'notes', notes:notes});
+			saveNotes();
 			updateList()
 
 		}
 	})
 });
+
+function switchDisplay(mode)
+{
+	if (mode=="edit")
+	{
+		$("#display").css("display","none");
+		$("#edit").css("display", "block");
+	}
+	else if (mode=="display")
+	{
+		$("#edit").css("display", "none");
+		$("#display").css("display","block");
+	}
+}
+
+function saveNotes()
+{
+	return store.save({key:'notes', notes:notes});
+}
 
 function updateList()
 {
@@ -155,7 +195,24 @@ function updateList()
 		addNote(notes[i].split("\n")[0], i);
 	}	
 }
+
+function deleteNote(id)
+{
+	notes.splice(current, 1); 
+
+	if (current>(notes.length-1))
+	{
+		current-=1;
+	}
+	saveNotes();
+	updateList();
+	loadNote(current);
+}
  
+function displayShowing()
+{
+	return $("#edit").css("display")=="none";
+}
 
 function addNote(note, id)
 {
@@ -173,7 +230,7 @@ function loadNote(id)
 }
 function newNote()
 {
-	notes.push("# New note");
+	notes.push(newnotetemplate);
 	updateList();
 	loadNote(notes.length-1);
 }
