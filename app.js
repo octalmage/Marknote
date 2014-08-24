@@ -6,7 +6,7 @@ mb.createMacBuiltin("Chimera");
 win.menu = mb;
 
 //Show Chrome debug console.
-//win.showDevTools();
+win.showDevTools();
 
 
 
@@ -23,13 +23,57 @@ var newnotetemplate="# New note";
 //Custom Renderer
 var renderer = new marked.Renderer();
 
-//Custom links, going to use for internal links!
-/*renderer.link = function (href, title, text) 
+//Very cusom Renderer.
+function render(markdown)
 {
-	output="<a target=\"_blank\" style='color:pink;' href=\"" + href + "\">" + text + "</a>";
+	//Custom code for internal links. Need to escape all regex commands. 
+	/*if (match=markdown.match(/\[.*\](\(.*\))/g)) //Finds links matching [something](something)
+	{
+		for (i in match)
+		{
+			href=/\((.*)\)/g.exec(match[i])[1]; //Grab the url inside (). 
+			text=/\[(.*)\]/g.exec(match[i])[1]; //Grab the text inside []. 
+			if (href.indexOf("://")==-1)
+			{
+				//Generates the regex string to match the origional link. 
+				re=new RegExp(match[i].replace(/\(/g, "\\\(").replace(/\)/g, "\\\)").replace(/\[/g, "\\\[").replace(/\]/g, "\\\]"));
+				//Builds the new markdown with our protocol.
+				markdown=markdown.replace(re, "[" + text + "](internal://" + href + ")");
+			}
 
+		}
+	}*/
+	html=marked(markdown, { renderer: renderer });
+	return html;
+}
+
+renderer.link = function (href, title, text) 
+{
+	output="<a target=\"_blank\" href=\"" + href + "\">" + text + "</a>";
 	return output;
-}*/
+}
+
+
+win.on('new-win-policy', function(frame, url, policy) 
+{
+	policy.ignore();
+	if (url.indexOf("internal://")!==-1)
+	{
+		title=url.replace("internal://", "");
+		for (i in notes)
+		{
+			if (getTitle(notes[i]).indexOf(title)!==-1)
+			{
+				loadNote(i);
+				return;
+			}
+		}
+	}
+	else
+	{
+		gui.Shell.openExternal(url);
+	}
+});
 
 /*
 renderer.code = function (code, language)
@@ -85,6 +129,7 @@ $(document).on("mousemove", function(e)
 	}
 });
 
+
 $(document).on("ready",function()
 {
 	store = new Lawnchair(
@@ -93,10 +138,8 @@ $(document).on("ready",function()
 	}, function ()
 	{})
 
-//store.save({key:'notes', notes:["test", "test"]});
 store.exists("notes", function (s)
 {
-	console.log("s: " + s);
 	if (s===false)
 	{
 		store.save({key:'notes', notes: defaultnote});
@@ -110,9 +153,6 @@ store.exists("notes", function (s)
 			notes=n.notes;
 			
 		});
-		//notes=n.notes;
-		console.log(notes)
-		
 	}
 });
 
@@ -120,8 +160,8 @@ store.exists("notes", function (s)
 
 	updateList();
 	note=notes[current];
-	markdown=marked(note, { renderer: renderer });
-
+	
+	markdown=render(note);
 	$("#display").html(markdown);
 
 
@@ -141,10 +181,7 @@ store.exists("notes", function (s)
 			//Put cursor at end of textarea.  
 			setTimeout(function()
 			{
-				//$("#noteedit").focus();
-				//$("#noteedit")[0].selectionStart = $("#noteedit")[0].selectionEnd = $("#noteedit")[0].value.length
 				editor.clearSelection();
-
 			},1)
 
 		}
@@ -154,7 +191,7 @@ store.exists("notes", function (s)
 			window.getSelection().removeAllRanges()
 			//note=$("#edit").text();
 			note=editor.getValue();
-			markdown=marked(note);
+			markdown=render(note);
 			$("#display").html(markdown);
 			switchDisplay("display");
 			notes[current]=note;
@@ -217,20 +254,26 @@ function displayShowing()
 function addNote(note, id)
 {
 	template="<list-item id=\"{{id}}\">{{note}}</list-item>";
-	item=template.replace("{{note}}", note.replace(/\W+/g, " ")).replace("{{id}}", id);
+	item=template.replace("{{note}}", getTitle(note)).replace("{{id}}", id);
 	$("#list").append(item);
 }
 
 function loadNote(id)
 {
 	current=id;
-	markdown=marked(notes[id]);
+	markdown=render(notes[id]);
 	$("#display").html(markdown);
 	note=notes[id];
+	$("#" + id).css("background-color", "#fff");
 }
 function newNote()
 {
 	notes.push(newnotetemplate);
 	updateList();
 	loadNote(notes.length-1);
+}
+
+function getTitle(note)
+{
+	return note.split("\n")[0].replace(/\W+/g, " ");
 }

@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
   <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css">
+  <!--<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/monokai.min.css">-->
 
  <script src="components/platform/platform.js"></script>
 
@@ -50,6 +51,11 @@
   {
     color: #4183c4;
     text-decoration: none;
+  }
+
+  img
+  {
+    max-width: 100%;
   }
 
   #display
@@ -134,13 +140,12 @@
   {
     overflow:hidden;
     margin-left:-10px !important;
-    color: #000;
+    color: #000; 
+    /*color: #fff;*/
     padding:5px;
-    /*background-color: #272822; monokai */
+    /*background-color: #272822;*/
     background-color: #f8f8f8;
   }
-  
- 
   
   </style>
 </head>
@@ -162,7 +167,7 @@
 <script src="js/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 <script>
     editor = ace.edit("edit");
-    editor.setTheme("ace/theme/github");
+    editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/markdown");
     editor.setShowPrintMargin(false);
     </script>
