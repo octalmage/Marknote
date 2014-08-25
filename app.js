@@ -2,13 +2,8 @@ var gui = require('nw.gui');
 var win = gui.Window.get();
 
 var mb = new gui.Menu({type:"menubar"});
-mb.createMacBuiltin("Chimera");
+mb.createMacBuiltin("Marknote");
 win.menu = mb;
-
-//Show Chrome debug console.
-win.showDevTools();
-
-
 
 var marked = require('marked');
 var highlight = require('highlight.js');
@@ -32,7 +27,6 @@ function render(markdown)
 
 renderer.link = function (href, title, text) 
 {
-	console.log(href + " | " + title + " | " + text);
 	if (href.indexOf("://")!=-1)
 	{
 		output="<a target=\"_blank\" href=\"" + href + "\">" + text + "</a>";
@@ -138,29 +132,40 @@ $(document).on("mousemove", function(e)
 
 $(document).on("ready",function()
 {
+	//Temporary access to devtools using CMD+ALT+I. 
+	$(document).on("keypress", function(e) 
+	{
+  		if (e.altKey && e.metaKey && e.keyCode==94)
+  		{
+  			win.showDevTools();
+  		}
+ 	 	
+	});
+
+
 	store = new Lawnchair(
 	{
 		adapter: "dom"
 	}, function ()
 	{})
 
-store.exists("notes", function (s)
-{
-	if (s===false)
+	store.exists("notes", function (s)
 	{
-		store.save({key:'notes', notes: defaultnote});
-		notes=defaultnote;
-	}
-	else
-	{
-		
-		store.get("notes", function (n)
+		if (s===false)
 		{
-			notes=n.notes;
+			store.save({key:'notes', notes: defaultnote});
+			notes=defaultnote;
+		}
+		else
+		{
+		
+			store.get("notes", function (n)
+			{
+				notes=n.notes;
 			
-		});
-	}
-});
+			});
+		}
+	});
 
 
 
@@ -174,6 +179,10 @@ store.exists("notes", function (s)
 	$("paper-icon-button[icon='close']").on("click", function()
 	{
 		deleteNote(current);
+	});
+	$("paper-icon-button[icon='content-copy']").on("click", function()
+	{
+		duplicateNote(current);
 	});
 
 	$("#note").on("dblclick", function()
@@ -237,6 +246,13 @@ function updateList()
 	{
 		addNote(notes[i].split("\n")[0], i);
 	}	
+}
+
+function duplicateNote(id)
+{
+	notes.push(notes[current]);
+	saveNotes();
+	updateList();
 }
 
 function deleteNote(id)
