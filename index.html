@@ -60,7 +60,14 @@
 
   ul
   {
-    padding: 0px;
+    padding-left:32px;
+  }
+
+  .task-list-item-checkbox
+  {
+    float: left;
+    margin-left: -20px;
+    margin-top: 4px;
   }
 
   #display
@@ -172,13 +179,13 @@
 <script src="js/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 <script>
     editor = ace.edit("edit");
-    editor.setTheme("ace/theme/monokai");
+    editor.setTheme("ace/theme/github");
     editor.getSession().setMode("ace/mode/markdown");
     editor.setShowPrintMargin(false);
     </script>
 
 <div id="actions">
-<paper-icon-button icon="close"></paper-icon-button>
+<paper-icon-button icon="content-copy"></paper-icon-button><paper-icon-button icon="close"></paper-icon-button>
 </div>
 </body>
 </html>
