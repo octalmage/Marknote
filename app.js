@@ -45,6 +45,21 @@ renderer.link = function (href, title, text)
 	return output;
 };
 
+renderer.listitem = function(text) 
+{
+	if (/^\s*\[[x ]\]\s*/.test(text)) 
+	{
+		text = text
+  			.replace(/^\s*\[ \]\s*/, '<input type="checkbox" class="task-list-item-checkbox" disabled> ')
+  			.replace(/^\s*\[x\]\s*/, '<input type="checkbox" class="task-list-item-checkbox" checked disabled> ');
+    	return '<li style="list-style: none; display: list-item;">' + text + '</li>';
+  	} 
+  	else 
+  	{
+    	return '<li>' + text + '</li>';
+  	}
+};
+
 win.on('new-win-policy', function(frame, url, policy) 
 {
 	policy.ignore();
