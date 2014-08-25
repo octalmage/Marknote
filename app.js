@@ -26,40 +26,31 @@ var renderer = new marked.Renderer();
 //Very cusom Renderer.
 function render(markdown)
 {
-	//Custom code for internal links. Need to escape all regex commands. 
-	/*if (match=markdown.match(/\[.*\](\(.*\))/g)) //Finds links matching [something](something)
-	{
-		for (i in match)
-		{
-			href=/\((.*)\)/g.exec(match[i])[1]; //Grab the url inside (). 
-			text=/\[(.*)\]/g.exec(match[i])[1]; //Grab the text inside []. 
-			if (href.indexOf("://")==-1)
-			{
-				//Generates the regex string to match the origional link. 
-				re=new RegExp(match[i].replace(/\(/g, "\\\(").replace(/\)/g, "\\\)").replace(/\[/g, "\\\[").replace(/\]/g, "\\\]"));
-				//Builds the new markdown with our protocol.
-				markdown=markdown.replace(re, "[" + text + "](internal://" + href + ")");
-			}
-
-		}
-	}*/
 	html=marked(markdown, { renderer: renderer });
 	return html;
 }
 
 renderer.link = function (href, title, text) 
 {
-	output="<a target=\"_blank\" href=\"" + href + "\">" + text + "</a>";
+	console.log(href + " | " + title + " | " + text);
+	if (href.indexOf("://")!=-1)
+	{
+		output="<a target=\"_blank\" href=\"" + href + "\">" + text + "</a>";
+	}
+	else
+	{
+		output="<a target=\"_blank\" href=\"note://" + href + "\">" + text + "</a>";
+	}
+	
 	return output;
-}
-
+};
 
 win.on('new-win-policy', function(frame, url, policy) 
 {
 	policy.ignore();
-	if (url.indexOf("internal://")!==-1)
+	if (url.indexOf("note://")!==-1)
 	{
-		title=url.replace("internal://", "");
+		title=url.replace("note://", "");
 		for (i in notes)
 		{
 			if (getTitle(notes[i]).indexOf(title)!==-1)
