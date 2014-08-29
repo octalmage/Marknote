@@ -13,17 +13,12 @@ var notes=new Array(), note="";
 var current=0;
 var defaultnote=["#Welcome to Marknote\n**Clean, easy, markdown notes.**\nDouble click to get started!"];
 var newnotetemplate="# New note";
+var noteCache=new Array();
 
 
 //Custom Renderer
 var renderer = new marked.Renderer();
 
-//Very cusom Renderer.
-function render(markdown)
-{
-	html=marked(markdown, { renderer: renderer });
-	return html;
-}
 
 renderer.link = function (href, title, text) 
 {
@@ -211,6 +206,13 @@ $(document).on("ready",function()
 		}
 	})
 });
+
+//Very cusom Renderer.
+function render(markdown)
+{
+	html=marked(markdown, { renderer: renderer });
+	return html;
+}
 
 function switchDisplay(mode)
 {
