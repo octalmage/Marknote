@@ -75,14 +75,6 @@ win.on('new-win-policy', function(frame, url, policy)
 	}
 });
 
-/*
-renderer.code = function (code, language)
-{
-	output="<div id=\"code\">" + highlight.highlightAuto(code).value + "</div>";
-	return output;
-
-}
-*/
 
 //Markdown Settings. Using Github styled markdown for automatic links, code blocks, and tables. 
 marked.setOptions({
