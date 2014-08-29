@@ -15,6 +15,8 @@ var defaultnote=["#Welcome to Marknote\n**Clean, easy, markdown notes.**\nDouble
 var newnotetemplate="# New note";
 var noteCache=new Array();
 
+var validImageExtensions=new Array("png", "gif", "bmp", "jpeg", "jpg");
+
 
 //Custom Renderer
 var renderer = new marked.Renderer();
@@ -119,6 +121,28 @@ $(document).on("mousemove", function(e)
 
 $(document).on("ready",function()
 {
+
+	window.ondragover = function(e) { e.preventDefault(); return false };
+	window.ondrop = function(e) { e.preventDefault(); return false };
+
+	var holder = document.getElementById('edit');
+
+	holder.ondrop = function (e) 
+	{
+		e.preventDefault();
+ 		for (var i = 0; i < e.dataTransfer.files.length; ++i) 
+  		{
+    		ext=e.dataTransfer.files[i].path.split(".");
+    		ext=ext[ext.length-1];
+    		if (validImageExtensions.indexOf(ext)!=-1)
+    		{
+    			img="![](file://" + e.dataTransfer.files[i].path + ")";
+    			editor.insert(img);
+    		}
+  		}
+  		return false;
+	};
+
 	//Temporary access to devtools using CMD+ALT+I. 
 	$(document).on("keypress", function(e) 
 	{
