@@ -157,6 +157,7 @@ $(document).on("ready",function()
 
 
 	updateList();
+	preloadCache()
 	note=notes[current];
 	
 	markdown=render(note);
@@ -193,15 +194,16 @@ $(document).on("ready",function()
 			window.getSelection().removeAllRanges()
 			//note=$("#edit").text();
 			note=editor.getValue();
-			markdown=render(note);
-			$("#display").html(markdown);
-			switchDisplay("display");
 			notes[current]=note;
-			//Move note to the top!
-			notes.splice(0, 0, notes.splice(current, 1)[0]); 
+			buildCache(current);
+			$("#display").html(noteCache[current]);
+			switchDisplay("display");
+			//Move note (and cache) to the top!
+			notes.splice(0, 0, notes.splice(current, 1)[0]);
+			noteCache.splice(0, 0, noteCache.splice(current, 1)[0]);
 			current=0;
 			saveNotes();
-			updateList()
+			updateList();
 
 		}
 	})
@@ -274,10 +276,28 @@ function addNote(note, id)
 	$("#list").append(item);
 }
 
+function preloadCache()
+{
+	for (i in notes)
+	{
+		buildCache(i);
+	}
+}
+
+function buildCache(id)
+{
+	markdown=render(notes[id]);
+	noteCache[id]=markdown;
+}
+
 function loadNote(id)
 {
 	current=id;
-	markdown=render(notes[id]);
+	if (!noteCache[id])
+	{
+		buildCache(id);
+	}
+	markdown=noteCache[id];
 	$("#display").html(markdown);
 	note=notes[id];
 	$("#" + id).css("background-color", "#fff");
