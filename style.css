@@ -1,0 +1,121 @@
+body 
+  {
+    height: 100%;
+    width:100%;
+    margin: 0;
+    overflow:hidden;
+    background-color: #F9F9F9;
+    font-family: 'RobotoDraft', sans-serif;
+  }
+
+  a 
+  {
+    color: #4183c4;
+    text-decoration: none;
+  }
+
+  img
+  {
+    max-width: 100%;
+  }
+
+  ul
+  {
+    padding-left:32px;
+  }
+
+  .task-list-item-checkbox
+  {
+    float: left;
+    margin-left: -20px;
+    margin-top: 4px;
+  }
+
+  #display
+  {
+    padding-left:10px;
+    padding-right: 10px;
+    z-index: 2;
+  }
+
+  #display, #note, #edit
+  {
+    left: 200px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    position: fixed;
+  }
+
+  #display, #edit
+  {
+    overflow: scroll;
+  }
+
+  #note
+  {
+    overflow: hidden;
+  }
+
+  #edit
+  {
+    display: none;
+  }
+
+  #edit textarea
+  {
+    font-size:24px;
+  }
+
+  #note
+  {
+    position: absolute;
+    left:200px;
+    top:0px;
+    background-color:#fff;
+    overflow:scroll;
+    /*background-image: url('img/paper_fibers.png');*/
+  }
+
+  #list
+  {
+    z-index:2;
+    position: fixed;
+    top: 10px;
+    left: 0px;
+    width: 200px;
+    /*background-color: #12131c; */
+    background-color: #F9F9F9;
+    bottom: 0px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+
+  #actions
+  {
+    position: fixed; 
+    top: 0px;
+    right: 0px;
+    display: none;
+    z-index: 5;
+  }
+/*
+  #code
+  {
+    margin-left:-10px !important;
+    color: #fff;
+    padding:5px;
+    background-color: #272822;
+  }
+  */
+ 
+  pre
+  {
+    overflow:hidden;
+    margin-left:-10px !important;
+    color: #000; 
+    /*color: #fff;*/
+    padding:5px;
+    /*background-color: #272822;*/
+    background-color: #f8f8f8;
+  }
