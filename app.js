@@ -271,6 +271,7 @@ function updateList()
 function duplicateNote(id)
 {
 	notes.push(notes[current]);
+	noteCache.push(noteCache[current]);
 	saveNotes();
 	updateList();
 }
@@ -278,6 +279,7 @@ function duplicateNote(id)
 function deleteNote(id)
 {
 	notes.splice(current, 1); 
+	noteCache.splice(current, 1);
 
 	if (current>(notes.length-1))
 	{
