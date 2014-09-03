@@ -155,6 +155,10 @@ $(document).on("ready",function()
 		win.showDevTools();
 	});
 
+	Mousetrap.bind('up up down down left right left right b a', function() 
+	{
+		console.log("KONAMI")
+	});	
 	store = new Lawnchair(
 	{
 		adapter: "dom"
