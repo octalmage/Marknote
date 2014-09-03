@@ -1,5 +1,6 @@
 var gui = require('nw.gui'); 
 var win = gui.Window.get();
+var clipboard = gui.Clipboard.get();
 
 var mb = new gui.Menu({type:"menubar"});
 mb.createMacBuiltin("Marknote");
@@ -143,16 +144,16 @@ $(document).on("ready",function()
   		return false;
 	};
 
-	//Temporary access to devtools using CMD+ALT+I. 
-	$(document).on("keypress", function(e) 
+	Mousetrap.bind('mod+shift+c', function()
 	{
-  		if (e.altKey && e.metaKey && e.keyCode==94)
-  		{
-  			win.showDevTools();
-  		}
- 	 	
+		clipboard.set(notes[current], 'text');
 	});
 
+	//Temporary access to devtools using CMD+ALT+I. 
+	Mousetrap.bind('mod+alt+i', function()
+	{
+		win.showDevTools();
+	});
 
 	store = new Lawnchair(
 	{
