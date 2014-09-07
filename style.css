@@ -99,6 +99,15 @@ body
     display: none;
     z-index: 5;
   }
+
+  #find
+  {
+    display: none;
+    position: fixed;
+    bottom:0px;
+    right: 0px;
+    z-index:5;
+  }
 /*
   #code
   {
