@@ -149,6 +149,37 @@ $(document).on("ready",function()
 		clipboard.set(notes[current], 'text');
 	});
 
+	Mousetrap.bind('mod+f', function()
+	{
+		console.log($("#find").css("display"));
+		if ($("#find").css("display")=="none")
+		{
+			$("#find").css("display", "block");
+			$("#findtext").focus();
+		}
+		else
+		{
+			$("#findtext").blur();
+			val=$("#findtext").val();
+			$("#findtext").val("");
+			window.find(val, 0, 0, 1, 0, 0, 0);
+			$("#findtext").val(val);
+		}
+
+	});
+
+	Mousetrap.bind('esc', function()
+	{
+		$("#find").css("display", "none");
+		$("#findtext").val("");
+	});
+
+	Mousetrap.stopCallback=function(e, element, combo) 
+	{
+    	return false
+	}
+
+
 	//Temporary access to devtools using CMD+ALT+I. 
 	Mousetrap.bind('mod+alt+i', function()
 	{
@@ -344,3 +375,8 @@ function getTitle(note)
 {
 	return note.split("\n")[0].replace(/\W+/g, " ");
 }
+
+RegExp.escape= function(s) 
+{
+    return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+};
