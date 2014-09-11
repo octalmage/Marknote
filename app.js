@@ -158,7 +158,6 @@ $(document).on("ready",function()
 
 	Mousetrap.bind('mod+f', function()
 	{
-		console.log($("#find").css("display"));
 		if ($("#find").css("display")=="none")
 		{
 			$("#find").css("display", "block");
