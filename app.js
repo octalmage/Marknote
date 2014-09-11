@@ -237,7 +237,7 @@ $(document).on("ready",function()
 		duplicateNote(current);
 	});
 
-	$("#note").on("dblclick", function()
+	$("#note").on("tripleclick",{ threshold: 600 }, function()
 	{
 		if (displayShowing())
 		{
