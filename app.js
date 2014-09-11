@@ -2,9 +2,13 @@ var gui = require('nw.gui');
 var win = gui.Window.get();
 var clipboard = gui.Clipboard.get();
 
-var mb = new gui.Menu({type:"menubar"});
-mb.createMacBuiltin("Marknote");
-win.menu = mb;
+//Needed for copy,cut,paste menu on Mac.
+if (process.platform=="darwin")
+{
+	var mb = new gui.Menu({type:"menubar"});
+	mb.createMacBuiltin("Marknote");
+	win.menu = mb;
+}
 
 var marked = require('marked');
 var highlight = require('highlight.js');
