@@ -259,7 +259,6 @@ $(document).on("ready",function()
 		{	
 			//unselect text from doubleclick. 
 			window.getSelection().removeAllRanges()
-			//note=$("#edit").text();
 			note=editor.getValue();
 			notes[current]=note;
 			buildCache(current);
