@@ -1,7 +1,7 @@
 {
   "name": "Marknote",
   "main": "index.html",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "window": {
     "title": "Marknote",
     "toolbar": false,
