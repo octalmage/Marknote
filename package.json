@@ -1,8 +1,9 @@
 {
-  "name": "MarkNote",
+  "name": "Marknote",
   "main": "index.html",
+  "version": "0.4.1",
   "window": {
-    "title": "Mark Note",
+    "title": "Marknote",
     "toolbar": false,
     "frame": true
   },
