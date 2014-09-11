@@ -100,7 +100,10 @@ marked.setOptions({
 
 $(document).on("click", "list-item", function()
 {
-	loadNote($(this).attr("id"));
+	if (displayShowing())
+	{
+		loadNote($(this).attr("id"));
+	}
 });
 $(document).on("click", "#newNote", function()
 {
@@ -372,7 +375,11 @@ function newNote()
 {
 	notes.push(newnotetemplate);
 	updateList();
-	loadNote(notes.length-1);
+	if (displayShowing())
+	{
+		loadNote(notes.length-1);		
+	}
+
 }
 
 function getTitle(note)
