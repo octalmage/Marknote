@@ -10,5 +10,8 @@
   "chromium-args": "--disable-web-security",
   "dependencies": {
     "marked": "~0.3.2"
+  },
+  "scripts": {
+    "test": "mocha tests/tests.js"
   }
 }
