@@ -7,10 +7,9 @@ var server = new SeleniumServer("../selenium-server-standalone-2.43.0.jar", {
   port: 4444
 });
 
-server.start();
+//server.start();
 
 var driver = new webdriver.Builder().
-usingServer(server.address()).
 withCapabilities(webdriver.Capabilities.chrome()).
 build();
 
