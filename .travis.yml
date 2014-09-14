@@ -4,14 +4,16 @@ sudo: false
 
 install:
   - "npm install mocha -g"
+  - "npm install"
 
 before_script:
-  - "wget http://dl.node-webkit.org/live-build/09-06-2014/linux32_master-build-170-4beeddf-692f0ab-731b9e2-0f7c844-ae5bb86-86728d1/chromedriver-nw-v0.10.5-pre-linux-ia32.tar.gz"
-  - "wget http://dl.node-webkit.org/live-build/09-06-2014/linux32_master-build-170-4beeddf-692f0ab-731b9e2-0f7c844-ae5bb86-86728d1/node-webkit-v0.10.5-pre-linux-ia32.tar.gz"
-  - "unzip -j chromedriver-nw-v0.10.5-pre-osx-ia32.zip"
-  - "unzip -j node-webkit-v0.10.5-pre-linux-ia32.tar.gz"
+  - "wget http://dl.node-webkit.org/v0.10.2/chromedriver-nw-v0.10.2-linux-ia32.tar.gz"
+  - "wget http://dl.node-webkit.org/v0.10.2/node-webkit-v0.10.2-linux-ia32.tar.gz"
+  - "wget http://selenium-release.storage.googleapis.com/2.43/selenium-server-standalone-2.43.0.jar"
+  - "tar --strip-components=1 -zxvf chromedriver-nw-v0.10.2-linux-ia32.tar.gz"
+  - "tar --strip-components=1 -zxvf node-webkit-v0.10.2-linux-ia32.tar.gz"
   - "sh -e /etc/init.d/xvfb start"
-  - sleep 5 # give xvfb some time to start
+  - sleep 5 # give xvfb some time to start.
 
 script:
   - "npm test"
