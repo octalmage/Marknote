@@ -223,10 +223,17 @@ $(document).on("ready",function()
 
 
 	updateList();
-	preloadCache()
-	note=notes[current];
+	preloadCache();
+
+	loadNote(current);
+	selectItem(current);
+
+	window.addEventListener('polymer-ready', function(e) 
+	{
+		document.getElementById("0").selected="yes";
+	});
 	
-	markdown=render(note);
+
 	$("#display").html(markdown);
 
 
@@ -308,7 +315,8 @@ function updateList()
 	for (i in notes)
 	{
 		addNote(notes[i].split("\n")[0], i);
-	}	
+	}
+	selectItem(current);
 }
 
 function duplicateNote(id)
@@ -359,6 +367,15 @@ function buildCache(id)
 	noteCache[id]=markdown;
 }
 
+function selectItem(id)
+{
+	$( "list-item" ).each(function( index ) 
+	{
+		$("#" + index)[0].selected="no";
+	});
+	$("#" + id)[0].selected="yes";
+}
+
 function loadNote(id)
 {
 	current=id;
@@ -369,7 +386,7 @@ function loadNote(id)
 	markdown=noteCache[id];
 	$("#display").html(markdown);
 	note=notes[id];
-	$("#" + id).css("background-color", "#fff");
+	selectItem(id);
 }
 function newNote()
 {
@@ -379,7 +396,6 @@ function newNote()
 	{
 		loadNote(notes.length-1);		
 	}
-
 }
 
 function getTitle(note)
