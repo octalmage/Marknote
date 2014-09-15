@@ -127,6 +127,7 @@
     padding:5px;
     /*background-color: #272822;*/
     background-color: #f8f8f8;
+    word-wrap: break-word;
   }
 
   table 
