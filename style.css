@@ -77,6 +77,17 @@
     /*background-image: url('img/paper_fibers.png');*/
   }
 
+  #pageflip
+  {
+    position: fixed;
+    bottom:0px;
+    right:0px;
+    width:50px;
+    height:50px;
+    background-color: #c0c0c0;
+  }
+  
+
   #list
   {
     z-index:2;
