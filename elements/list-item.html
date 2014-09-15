@@ -1,6 +1,7 @@
 <link rel="import" href="../components/polymer/polymer.html">
 
 <polymer-element name="list-item" attributes="id" noscript>
+<polymer-element name="list-item" attributes="id selected backgroundcolor color">
   <template>
   	<style> 
 		.listitem
@@ -10,10 +11,16 @@
 			padding:5px;
 			color:#8D8B83;
 			text-align: center;
+			color:#ffffff;
+			text-align: left;
+			padding-left:25px;
+			font-family: 'Lato', sans-serif;
+			font-weight: 300;
 		}
   	</style>
   
   <div class="listitem" id="{{id}}">
+  <div style="background-color: {{backgroundcolor}}; color: {{color}}" class="listitem" id="{{id}}">
   <content></content>
   </div>
   </template>
