@@ -25,5 +25,27 @@
   </div>
   </template>
 
+  <script>
+    Polymer('list-item', 
+    {
+    	ready: function() 
+      	{
+        	this.selected = 'no';
+    	},
+     	selectedChanged: function()
+     	{
+     		if (this.selected=="yes")
+     		{
+     			this.backgroundcolor="#F6D503";
+     			this.color="#333333";
+     		}
+     		else if (this.selected=="no")
+     		{
+     			this.backgroundcolor="none";
+     			this.color="#ffffff";
+     		}
+     	}
+    });
+  </script>
 
 </polymer-element>
