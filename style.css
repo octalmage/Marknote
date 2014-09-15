@@ -1,10 +1,10 @@
-body 
+  body 
   {
     height: 100%;
     width:100%;
     margin: 0;
     overflow:hidden;
-    background-color: #F9F9F9;
+    background-color: #545454;
     font-family: 'RobotoDraft', sans-serif;
   }
 
@@ -85,7 +85,7 @@ body
     left: 0px;
     width: 200px;
     /*background-color: #12131c; */
-    background-color: #F9F9F9;
+    background-color: #545454;
     bottom: 0px;
     overflow-y: scroll;
     overflow-x: hidden;
