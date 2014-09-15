@@ -174,6 +174,28 @@ $(document).on("ready",function()
 
 	});
 
+	Mousetrap.bind('up', function()
+	{
+		current--;
+		if (current<0)
+		{
+			current=notes.length-1;
+		}
+		loadNote(current);
+		$("#list").scrollTop($("#" + current).offset().top);
+	});
+
+	Mousetrap.bind('down', function()
+	{
+		current++;
+		if (current>notes.length-1)
+		{
+			current=0;
+		}
+		loadNote(current);
+		$("#list").scrollTop($("#" + current).offset().top);
+	});
+
 	Mousetrap.bind('esc', function()
 	{
 		$("#find").css("display", "none");
