@@ -271,7 +271,6 @@ $(document).on("ready",function()
 	$("#note").on("tripleclick",{ threshold: 600 }, function(e)
 	{
 
-		console.log($.nearest({x: e.clientX, y: e.clientY}));
 		if (displayShowing())
 		{
 			//Unselect text from doubleclick. 
