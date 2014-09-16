@@ -82,9 +82,10 @@
     position: fixed;
     bottom:0px;
     right:0px;
-    width:50px;
-    height:50px;
+    width:25px;
+    height:25px;
     background-color: #c0c0c0;
+    z-index: 10;
   }
   
 
