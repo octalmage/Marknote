@@ -17,6 +17,8 @@ before_script:
   - "sh -e /etc/init.d/xvfb start"
   - "ls -l"
   - sleep 5 # give xvfb some time to start.
+  - "java -jar selenium-server-standalone-2.43.0.jar -Dwebdriver.chrome.driver=./chromedriver"
+  - sleep 10
 
 script:
   - "npm test"
