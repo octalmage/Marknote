@@ -2,21 +2,50 @@
   "name": "Marknote",
   "main": "index.html",
   "version": "0.4.3",
-  "window": {
+  "description": "A clean, open source, cross platform, markdown note taking app.",
+  "keywords": 
+  [
+    "markdown",
+    "notes",
+    "todo",
+    "webkit"
+  ],
+  "repository": 
+  {
+    "type": "git",
+    "url": "https://github.com/octalmage/Marknote"
+  },
+  "window": 
+  {
     "title": "Marknote",
     "toolbar": false,
     "frame": true
   },
+  "author": "Jason Stallings <jason@stallin.gs>",
+  "contributors": 
+  [{
+    "name": "Michael Champlin",
+    "email": "mjchamplin@gmail.com"
+  }],
+  "license": "GPL v2",
+  "bugs": 
+  {
+    "url": "https://github.com/octalmage/Marknote/issues"
+  },
+  "homepage": "https://github.com/octalmage/Marknote",
   "chromium-args": "--disable-web-security",
-  "dependencies": {
+  "dependencies": 
+  {
     "marked": "~0.3.2",
     "highlight.js": "*"
   },
-  "devDependencies": {
+  "devDependencies": 
+  {
     "node-webkit-builder": "*",
     "selenium-webdriver": "*"
   },
-  "scripts": {
+  "scripts": 
+  {
     "test": "mocha tests/tests.js"
   }
 }
