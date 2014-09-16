@@ -361,7 +361,12 @@ function updateList()
 	{
 		addNote(notes[i].split("\n")[0], i);
 	}
-	selectItem(current);
+	//Needed to account for dom update delay. 
+	setTimeout(function()
+	{
+		selectItem(current);
+	},1);
+	
 }
 
 function duplicateNote(id)
