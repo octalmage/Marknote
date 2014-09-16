@@ -174,8 +174,9 @@ $(document).on("ready",function()
 
 	});
 
-	Mousetrap.bind('up', function()
+	Mousetrap.bind('up', function(e)
 	{
+		e.preventDefault();
 		current--;
 		if (current<0)
 		{
@@ -185,8 +186,9 @@ $(document).on("ready",function()
 		$("#list").scrollTop($("#" + current).offset().top);
 	});
 
-	Mousetrap.bind('down', function()
+	Mousetrap.bind('down', function(e)
 	{
+		e.preventDefault();
 		current++;
 		if (current>notes.length-1)
 		{
