@@ -1,13 +1,6 @@
 var assert = require('assert'),
-  SeleniumServer = require('selenium-webdriver/remote').SeleniumServer,
   test = require('selenium-webdriver/testing'),
   webdriver = require('selenium-webdriver');
-
-var server = new SeleniumServer("../selenium-server-standalone-2.43.0.jar", {
-  port: 4444
-});
-
-//server.start();
 
 var driver = new webdriver.Builder().
 withCapabilities(webdriver.Capabilities.chrome()).
@@ -35,6 +28,10 @@ test.describe('Marknote', function()
 
   test.it('Can add note.', function()
   {
+
+
+    driver.executeScript('$("#actions").show();');
+
 
     driver.wait(function() 
     {
