@@ -274,35 +274,25 @@ $(document).on("ready",function()
 
 		if (displayShowing())
 		{
-			//Unselect text from doubleclick. 
-			window.getSelection().removeAllRanges()
-			editor.setValue(note);
-			switchDisplay("edit");
-			//Put cursor at end of textarea.  
-			setTimeout(function()
-			{
-				editor.clearSelection();
-			},1)
-
+			edit();
 		}
 		else
 		{	
-			//unselect text from doubleclick. 
-			window.getSelection().removeAllRanges()
-			note=editor.getValue();
-			notes[current]=note;
-			buildCache(current);
-			$("#display").html(noteCache[current]);
-			switchDisplay("display");
-			//Move note (and cache) to the top!
-			notes.splice(0, 0, notes.splice(current, 1)[0]);
-			noteCache.splice(0, 0, noteCache.splice(current, 1)[0]);
-			current=0;
-			saveNotes();
-			updateList();
-
+			display();
 		}
 	})
+
+	$("#pageflip").on("mousedown", function()
+	{
+		if (displayShowing())
+		{
+			edit();
+		}
+		else
+		{	
+			display();
+		}
+	});
 });
 
 //Very cusom Renderer.
@@ -310,6 +300,37 @@ function render(markdown)
 {
 	html=marked(markdown, { renderer: renderer });
 	return html;
+}
+
+function edit()
+{
+	//Unselect text from doubleclick. 
+	window.getSelection().removeAllRanges()
+	editor.setValue(note);
+	switchDisplay("edit");
+	//Put cursor at end of textarea.  
+	setTimeout(function()
+	{
+		editor.clearSelection();
+		editor.focus();
+	},1)
+}
+
+function display()
+{
+	//unselect text from doubleclick. 
+	window.getSelection().removeAllRanges()
+	note=editor.getValue();
+	notes[current]=note;
+	buildCache(current);
+	$("#display").html(noteCache[current]);
+	switchDisplay("display");
+	//Move note (and cache) to the top!
+	notes.splice(0, 0, notes.splice(current, 1)[0]);
+	noteCache.splice(0, 0, noteCache.splice(current, 1)[0]);
+	current=0;
+	saveNotes();
+	updateList();
 }
 
 function switchDisplay(mode)
