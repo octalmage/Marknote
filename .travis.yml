@@ -7,13 +7,13 @@ install:
   - "npm install"
 
 before_script:
-  - "wget http://dl.node-webkit.org/v0.10.2/chromedriver-nw-v0.10.2-linux-ia32.tar.gz"
-  - "wget http://dl.node-webkit.org/v0.10.2/node-webkit-v0.10.2-linux-ia32.tar.gz"
+  - "wget http://dl.node-webkit.org/v0.10.2/chromedriver-nw-v0.10.2-linux-x64.tar.gz"
+  - "wget http://dl.node-webkit.org/v0.10.2/node-webkit-v0.10.2-linux-x64.tar.gz"
   - "wget http://selenium-release.storage.googleapis.com/2.43/selenium-server-standalone-2.43.0.jar"
-  - "tar -zxvf chromedriver-nw-v0.10.2-linux-ia32.tar.gz"
-  - "mv chromedriver-nw-v0.10.2-linux-ia32/chromedriver ./"
-  - "tar -zxvf node-webkit-v0.10.2-linux-ia32.tar.gz"
-  - "mv node-webkit-v0.10.2-linux-ia32/* ./"
+  - "tar -zxvf chromedriver-nw-v0.10.2-linux-x64.tar.gz"
+  - "mv chromedriver-nw-v0.10.2-linux-x64/chromedriver ./"
+  - "tar -zxvf node-webkit-v0.10.2-linux-x64.tar.gz"
+  - "mv node-webkit-v0.10.2-linux-x64/* ./"
   - "sh -e /etc/init.d/xvfb start"
   - "ls -l"
   - sleep 5 # give xvfb some time to start.

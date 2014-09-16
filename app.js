@@ -64,7 +64,7 @@ win.on('new-win-policy', function(frame, url, policy)
 		title=url.replace("note://", "");
 		for (i in notes)
 		{
-			if (getTitle(notes[i]).indexOf(title)!==-1)
+			if (getTitle(notes[i]).toLowerCase().indexOf(title.toLowerCase())!==-1)
 			{
 				loadNote(i);
 				return;
