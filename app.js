@@ -112,6 +112,17 @@ $(document).on("click", "#newNote", function()
 
 $(document).on("mousemove", function(e)
 {
+	if (e.pageX>(window.innerWidth-75) && e.pageY>(window.innerHeight-75))
+	{
+		$("#pageflip").css("width", "25px");
+		$("#pageflip").css("height", "25px");
+	}
+	else
+	{
+		$("#pageflip").css("width", "0px");
+		$("#pageflip").css("height", "0px");
+	}
+
 	if (!displayShowing())
 	{
 		return;

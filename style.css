@@ -82,12 +82,24 @@
     position: fixed;
     bottom:0px;
     right:0px;
-    width:25px;
-    height:25px;
-    background-color: #c0c0c0;
+    width:0px;
+    height:0px;
     z-index: 10;
+    background : 
+    linear-gradient(
+      -45deg, 
+      #fff, 
+      #f3f3f3 45%, 
+      #ddd 50%, 
+      #aaa 50%, 
+      #bbb 56%, 
+      #ccc 62%, 
+      #f3f3f3 80%,
+      #fff 100%
+    );
+    box-shadow : 0 0 10px rgba(0, 0, 0, .5);
+    transition: all .5s ease;
   }
-  
 
   #list
   {
