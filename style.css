@@ -132,6 +132,30 @@
     right: 0px;
     z-index:5;
   }
+
+  #settings
+  {
+    background-color:#23251e;
+    color:#dddddd;
+    font-family: 'Lato', sans-serif;
+  }
+
+  #settings h3
+  {
+    
+    margin:0px !important;
+
+  }
+   
+
+  input
+  {
+    background-color: transparent;
+    border: 0;
+    color:#dddddd;
+  }
+   
+
 /*
   #code
   {
