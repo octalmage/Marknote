@@ -1,6 +1,7 @@
 var gui = require('nw.gui'); 
 var win = gui.Window.get();
 var clipboard = gui.Clipboard.get();
+var currentuser;
 
 //Needed for copy,cut,paste menu on Mac.
 if (process.platform=="darwin")
@@ -11,6 +12,11 @@ if (process.platform=="darwin")
 }
 
 Parse.initialize("VvmNgHcupWn43L9ThaNDiIldMSjOXiLvd7DR7wTq", "DTAv28KMYt5pYlY3Q1yDJ3Tvm2FOViL4io9deBBt");
+var Parse_Notes = Parse.Object.extend("Notes");
+var Private_Parse_Notes = new Parse_Notes();
+var syncing;
+var parsenoteid;
+var test;
 
 /*
 
@@ -24,11 +30,8 @@ var user = Parse.User.logIn("username", "password",
 
 });
 
-var Parse_Notes = Parse.Object.extend("Notes");
-var Private_Parse_Notes = new Parse_Notes();
-Private_Parse_Notes.set("content", "This note is private!");
-Private_Parse_Notes.setACL(new Parse.ACL(Parse.User.current()));
-Private_Parse_Notes.save();
+
+
 
 var user = new Parse.User();
 user.set("username", "my name");
@@ -183,7 +186,6 @@ $(document).on("mousemove", function(e)
 
 $(document).on("ready",function()
 {
-
 	window.ondragover = function(e) { e.preventDefault(); return false };
 	window.ondrop = function(e) { e.preventDefault(); return false };
 
@@ -301,6 +303,24 @@ $(document).on("ready",function()
 
 
 
+	store.exists("settings", function (s)
+	{
+		if (s!==false)
+		{
+			store.get("settings", function (n)
+			{
+				$("#username").val(n.username);
+				$("#password").val("********");
+				login(n.username, n.password)
+				if (n.syncing==true)
+				{
+					$("#syncing").prop("checked", true);
+				}
+				syncing=n.syncing;
+			});
+		}
+	});
+
 	updateList();
 	preloadCache();
 
@@ -324,6 +344,23 @@ $(document).on("ready",function()
 	{
 		duplicateNote(current);
 	});
+	$("paper-icon-button[icon='menu']").on("click", function()
+	{
+		$.blockUI({ overlayCSS:  { cursor: null }, css: { border: "none", cursor: null} , message: $('#settings') }); 
+	});
+	$("#saveButton").on("click", function()
+	{
+		$.unblockUI();
+		username=$("#username").val();
+		password=$("#password").val();
+		syncing=$("#syncing").prop("checked");
+		store.save({key:'settings', username: username, password: password, syncing: syncing});
+		if ($("#syncing").prop("checked"))
+		{
+			login(username,password);
+		}
+
+	})
 
 	/*$("#note").on("tripleclick",{ threshold: 600 }, function(e)
 	{
@@ -356,6 +393,98 @@ function render(markdown)
 {
 	html=marked(markdown, { renderer: renderer });
 	return html;
+}
+
+function login(username, password)
+{
+ 	Parse.User.logIn(username, password, 
+ 	{
+  		success: function(user) 
+  		{
+  			//console.log(Parse.User.current())
+  			currentuser = Parse.User.current();
+  			if (syncing)
+  			{
+  				parse_getnotes()
+  			}
+  			
+  		},
+  		error: function(user, error) 
+  		{
+   			console.log(error)
+   			signup(username, password);
+  		}
+	});
+}
+
+function signup(username, password)
+{
+	var user = new Parse.User();
+	user.set("username", username);
+	user.set("password", password);
+
+ 
+	user.signUp(null, 
+	{
+  		success: function(user) 
+  		{
+  			login(username, password);
+  		},
+  		error: function(user, error) 
+  		{
+    		if (error.code==202)
+    		{
+    			alert("Username taken and password is incorrect.");
+    		}
+  		}
+	});
+}
+
+function parse_getnotes()
+{
+	var query = new Parse.Query(Parse_Notes);
+	query.find(
+	{
+  		success: function(results) 
+  		{
+  			if (results.length<1)
+  			{
+				Private_Parse_Notes.set("content", notes);
+				Private_Parse_Notes.setACL(new Parse.ACL(Parse.User.current()));
+				Private_Parse_Notes.save(null, 
+				{
+ 					success: function(parsenote) 
+ 					{
+ 						parsenoteid=parsenote.id;
+ 					}
+ 				});
+  			}
+  			else
+  			{
+  				parsenoteid=results[0].id;
+  				notes=results[0].get("content");
+  				updateList();
+  			}
+  		},
+  		error: function(error) 
+  		{
+   			alert("Error: " + error.code + " " + error.message);
+  		}
+  	});
+
+}
+
+function parse_savenotes()
+{
+	var query = new Parse.Query(Parse_Notes);
+	query.get(parsenoteid, 
+	{
+  		success: function(n) 
+  		{
+  			n.set("content", notes)
+  			n.save();
+  		}
+  	});
 }
 
 function edit()
@@ -405,6 +534,10 @@ function switchDisplay(mode)
 
 function saveNotes()
 {
+	if (syncing)
+	{
+		parse_savenotes();
+	}
 	return store.save({key:'notes', notes:notes});
 }
 
