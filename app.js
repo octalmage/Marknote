@@ -16,7 +16,6 @@ var Parse_Notes = Parse.Object.extend("Notes");
 var Private_Parse_Notes = new Parse_Notes();
 var syncing;
 var parsenoteid;
-var test;
 
 /*
 
