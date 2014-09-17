@@ -36,7 +36,7 @@ test.describe('Marknote', function()
     driver.wait(function() 
     {
      return driver.isElementPresent(webdriver.By.id('newNote'));
-    }, 5000);
+    }, 10000);
     driver.findElement(webdriver.By.id('newNote')).click();
 
     driver.executeScript('return notes').then(function(arr)
@@ -50,7 +50,16 @@ test.describe('Marknote', function()
 
   test.it('Can open editor.', function()
   {
+    
+    
+    driver.executeScript('$("#pageflip").css("width", "25px");')
+    driver.executeScript('$("#pageflip").css("height", "25px");')
 
+    driver.wait(function() 
+    {
+     return driver.isElementPresent(webdriver.By.id('pageflip'));
+    }, 10000);    
+    
     driver.findElement(webdriver.By.id('pageflip')).click();
 
     driver.executeScript('return displayShowing()').then(function(test)
