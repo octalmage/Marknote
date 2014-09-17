@@ -271,7 +271,7 @@ $(document).on("ready",function()
 		duplicateNote(current);
 	});
 
-	$("#note").on("tripleclick",{ threshold: 600 }, function(e)
+	/*$("#note").on("tripleclick",{ threshold: 600 }, function(e)
 	{
 
 		if (displayShowing())
@@ -282,7 +282,7 @@ $(document).on("ready",function()
 		{	
 			display();
 		}
-	})
+	})*/
 
 	$("#pageflip").on("mousedown", function()
 	{
