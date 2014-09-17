@@ -1,0 +1,4 @@
+build/
+node-webkit.app/
+node_modules/node-webkit-builder
+node_modules/selenium-webdriver
