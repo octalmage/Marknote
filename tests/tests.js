@@ -51,9 +51,7 @@ test.describe('Marknote', function()
   test.it('Can open editor.', function()
   {
 
-    driver.findElement(webdriver.By.id('display')).click();
-    driver.findElement(webdriver.By.id('display')).click();
-    driver.findElement(webdriver.By.id('display')).click();
+    driver.findElement(webdriver.By.id('pageflip')).click();
 
     driver.executeScript('return displayShowing()').then(function(test)
     {
@@ -78,9 +76,7 @@ test.describe('Marknote', function()
 
   test.it('Can save note.', function()
   {
-    driver.findElement(webdriver.By.id('note')).click();
-    driver.findElement(webdriver.By.id('note')).click();
-    driver.findElement(webdriver.By.id('note')).click();
+    driver.findElement(webdriver.By.id('pageflip')).click();
 
     driver.wait(function() 
     {
