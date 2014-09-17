@@ -10,6 +10,49 @@ if (process.platform=="darwin")
 	win.menu = mb;
 }
 
+Parse.initialize("VvmNgHcupWn43L9ThaNDiIldMSjOXiLvd7DR7wTq", "DTAv28KMYt5pYlY3Q1yDJ3Tvm2FOViL4io9deBBt");
+
+/*
+
+    
+var user = Parse.User.logIn("username", "password", 
+{
+	success: function(user) 
+  	{
+  		console.log(user);
+ 	}
+
+});
+
+var Parse_Notes = Parse.Object.extend("Notes");
+var Private_Parse_Notes = new Parse_Notes();
+Private_Parse_Notes.set("content", "This note is private!");
+Private_Parse_Notes.setACL(new Parse.ACL(Parse.User.current()));
+Private_Parse_Notes.save();
+
+var user = new Parse.User();
+user.set("username", "my name");
+user.set("password", "my pass");
+user.set("email", "email@example.com");
+ 
+// other fields can be set just like with Parse.Object
+user.set("phone", "415-392-0202");
+ 
+user.signUp(null, {
+  success: function(user) {
+    // Hooray! Let them use the app now.
+  },
+  error: function(user, error) {
+    // Show the error message somewhere and let the user try again.
+    alert("Error: " + error.code + " " + error.message);
+  }
+});
+});*/
+
+
+
+
+
 var marked = require('marked');
 var highlight = require('highlight.js');
 var editor;
