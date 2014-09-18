@@ -4,7 +4,7 @@ var clipboard = gui.Clipboard.get();
 var currentuser;
 
 //Needed for copy,cut,paste menu on Mac.
-if (process.platform == "darwin")
+if (process.platform === "darwin")
 {
 	var mb = new gui.Menu(
 	{
@@ -25,12 +25,12 @@ var marked = require('marked');
 var highlight = require('highlight.js');
 var editor;
 var store;
-var notes = new Array(),
+var notes = [],
 	note = "";
 var current = 0;
 var defaultnote = ["#Welcome to Marknote\n**Clean, easy, markdown notes.**\nDouble click to get started!"];
 var newnotetemplate = "# New note";
-var noteCache = new Array();
+var noteCache = [];
 
 var validImageExtensions = new Array("png", "gif", "bmp", "jpeg", "jpg");
 
@@ -41,7 +41,8 @@ var renderer = new marked.Renderer();
 
 renderer.link = function(href, title, text)
 {
-	if (href.indexOf("://") != -1)
+	var output;
+	if (href.indexOf("://") !== -1)
 	{
 		output = "<a target=\"_blank\" href=\"" + href + "\">" + text + "</a>";
 	}
@@ -69,12 +70,13 @@ renderer.listitem = function(text)
 };
 
 win.on('new-win-policy', function(frame, url, policy)
-{
+{ 
+	var title;
 	policy.ignore();
 	if (url.indexOf("note://") !== -1)
 	{
 		title = url.replace("note://", "");
-		for (i in notes)
+		for (var i in notes)
 		{
 			if (getTitle(notes[i]).toLowerCase().indexOf(title.toLowerCase()) !== -1)
 			{
@@ -120,7 +122,7 @@ $(document).on("click", "list-item", function()
 $(document).on("click", "#newNote", function()
 {
 	newNote();
-})
+});
 
 $(document).on("mousemove", function(e)
 {
@@ -155,18 +157,19 @@ $(document).on("ready", function()
 	window.ondragover = function(e)
 	{
 		e.preventDefault();
-		return false
+		return false;
 	};
 	window.ondrop = function(e)
 	{
 		e.preventDefault();
-		return false
+		return false;
 	};
 
 	var holder = document.getElementById('edit');
 
 	holder.ondrop = function(e)
 	{
+		var ext, img;
 		e.preventDefault();
 		for (var i = 0; i < e.dataTransfer.files.length; ++i)
 		{
@@ -188,7 +191,8 @@ $(document).on("ready", function()
 
 	Mousetrap.bind('mod+f', function()
 	{
-		if ($("#find").css("display") == "none")
+		var val;
+		if ($("#find").css("display") === "none")
 		{
 			$("#find").css("display", "block");
 			$("#findtext").focus();
@@ -236,7 +240,7 @@ $(document).on("ready", function()
 
 	Mousetrap.stopCallback = function(e, element, combo)
 	{
-		return false
+		return false;
 	}
 
 
@@ -254,7 +258,7 @@ $(document).on("ready", function()
 	store = new Lawnchair(
 	{
 		adapter: "dom"
-	}, function() {})
+	}, function() {});
 
 	store.exists("notes", function(s)
 	{
@@ -354,7 +358,7 @@ $(document).on("ready", function()
 		{
 			login(username, password);
 		}
-	})
+	});
 
 	/*$("#note").on("tripleclick",{ threshold: 600 }, function(e)
 	{
@@ -402,13 +406,12 @@ function login(username, password)
 			currentuser = Parse.User.current();
 			if (syncing)
 			{
-				parse_getnotes()
+				parse_getnotes();
 			}
 
 		},
 		error: function(user, error)
 		{
-			console.log(error)
 			signup(username, password);
 		}
 	});
@@ -429,7 +432,7 @@ function signup(username, password)
 		},
 		error: function(user, error)
 		{
-			if (error.code == 202)
+			if (error.code === 202)
 			{
 				$("#syncing").prop("checked", false);
 				alert("Username taken or password is incorrect.");
@@ -460,7 +463,8 @@ function parse_getnotes()
 			else
 			{
 				parsenoteid = results[0].id;
-				if (notes != results[0].get("content"))
+				// [bug] - UI refreshes even if there aren't updates.
+				if (notes !== results[0].get("content"))
 				{
 					notes = results[0].get("content");
 					updateList();
@@ -482,7 +486,7 @@ function parse_savenotes()
 	{
 		success: function(n)
 		{
-			n.set("content", notes)
+			n.set("content", notes);
 			n.save();
 		}
 	});
@@ -491,7 +495,7 @@ function parse_savenotes()
 function edit()
 {
 	//Unselect text from doubleclick. 
-	window.getSelection().removeAllRanges()
+	window.getSelection().removeAllRanges();
 	editor.setValue(note);
 	switchDisplay("edit");
 	//Put cursor at end of textarea.  
@@ -499,13 +503,13 @@ function edit()
 	{
 		editor.clearSelection();
 		editor.focus();
-	}, 1)
+	}, 1);
 }
 
 function display()
 {
 	//unselect text from doubleclick. 
-	window.getSelection().removeAllRanges()
+	window.getSelection().removeAllRanges();
 	note = editor.getValue();
 	notes[current] = note;
 	buildCache(current);
@@ -521,12 +525,12 @@ function display()
 
 function switchDisplay(mode)
 {
-	if (mode == "edit")
+	if (mode === "edit")
 	{
 		$("#display").css("display", "none");
 		$("#edit").css("display", "block");
 	}
-	else if (mode == "display")
+	else if (mode === "display")
 	{
 		$("#edit").css("display", "none");
 		$("#display").css("display", "block");
@@ -549,7 +553,7 @@ function saveNotes()
 function updateList()
 {
 	$("#list").html("");
-	for (i in notes)
+	for (var i in notes)
 	{
 		addNote(notes[i].split("\n")[0], i);
 	}
@@ -585,7 +589,7 @@ function deleteNote(id)
 
 function displayShowing()
 {
-	return $("#edit").css("display") == "none";
+	return $("#edit").css("display") === "none";
 }
 
 function addNote(note, id)
@@ -597,7 +601,7 @@ function addNote(note, id)
 
 function preloadCache()
 {
-	for (i in notes)
+	for (var i in notes)
 	{
 		buildCache(i);
 	}
@@ -611,6 +615,7 @@ function buildCache(id)
 
 function selectItem(id)
 {
+	// [todo] - Only deselect selected list-items. 
 	$("list-item").each(function(index)
 	{
 		$("#" + index)[0].selected = "no";
