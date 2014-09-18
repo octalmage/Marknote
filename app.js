@@ -272,7 +272,7 @@ $(document).on("ready",function()
 			store.get("settings", function (n)
 			{
 				$("#username").val(n.username);
-				$("#password").val("********");
+				$("#password").val(n.password);
 				syncing=n.syncing;
 				if (syncing===true)
 				{
