@@ -273,12 +273,12 @@ $(document).on("ready",function()
 			{
 				$("#username").val(n.username);
 				$("#password").val("********");
-				login(n.username, n.password)
+				syncing=n.syncing;
 				if (n.syncing==true)
 				{
+					login(n.username, n.password)
 					$("#syncing").prop("checked", true);
 				}
-				syncing=n.syncing;
 			});
 		}
 	});
@@ -317,9 +317,13 @@ $(document).on("ready",function()
 		password=$("#password").val();
 		syncing=$("#syncing").prop("checked");
 		store.save({key:'settings', username: username, password: password, syncing: syncing});
-		if ($("#syncing").prop("checked"))
+		if (syncing)
 		{
 			login(username,password);
+		}
+		else
+		{
+			
 		}
 
 	})
