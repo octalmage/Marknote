@@ -272,11 +272,11 @@ $(document).on("ready",function()
 			store.get("settings", function (n)
 			{
 				$("#username").val(n.username);
-				$("#password").val("********");
+				$("#password").val(n.password);
 				syncing=n.syncing;
-				if (n.syncing==true)
+				if (syncing===true)
 				{
-					login(n.username, n.password)
+					login(n.username, n.password);
 					$("#syncing").prop("checked", true);
 				}
 			});
@@ -317,15 +317,10 @@ $(document).on("ready",function()
 		password=$("#password").val();
 		syncing=$("#syncing").prop("checked");
 		store.save({key:'settings', username: username, password: password, syncing: syncing});
-		if (syncing)
+		if (syncing===true)
 		{
 			login(username,password);
 		}
-		else
-		{
-			
-		}
-
 	})
 
 	/*$("#note").on("tripleclick",{ threshold: 600 }, function(e)
@@ -400,6 +395,7 @@ function signup(username, password)
   		{
     		if (error.code==202)
     		{
+    			$("#syncing").prop("checked", false);
     			alert("Username taken or password is incorrect.");
     		}
   		}
