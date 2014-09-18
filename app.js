@@ -276,7 +276,7 @@ $(document).on("ready",function()
 				syncing=n.syncing;
 				if (syncing===true)
 				{
-					login(n.username, n.password)
+					login(n.username, n.password);
 					$("#syncing").prop("checked", true);
 				}
 			});
