@@ -321,11 +321,6 @@ $(document).on("ready",function()
 		{
 			login(username,password);
 		}
-		else
-		{
-			
-		}
-
 	})
 
 	/*$("#note").on("tripleclick",{ threshold: 600 }, function(e)
