@@ -395,6 +395,7 @@ function signup(username, password)
   		{
     		if (error.code==202)
     		{
+    			$("#syncing").prop("checked", false);
     			alert("Username taken or password is incorrect.");
     		}
   		}
