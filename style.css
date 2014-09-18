@@ -88,16 +88,11 @@
     background : 
     linear-gradient(
       -45deg, 
-      #fff, 
-      #f3f3f3 45%, 
-      #ddd 50%, 
-      #aaa 50%, 
-      #bbb 56%, 
-      #ccc 62%, 
-      #f3f3f3 80%,
-      #fff 100%
+      #FFF, 
+      #FFF 44%,
+      #ACACAC 45%
     );
-    box-shadow : 0 0 10px rgba(0, 0, 0, .5);
+    /*box-shadow : 0 0 10px rgba(0, 0, 0, .5); Makes it too realistic. */
     transition: all .5s ease;
   }
 
