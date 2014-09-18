@@ -1,12 +1,15 @@
-var gui = require('nw.gui'); 
+var gui = require('nw.gui');
 var win = gui.Window.get();
 var clipboard = gui.Clipboard.get();
 var currentuser;
 
 //Needed for copy,cut,paste menu on Mac.
-if (process.platform=="darwin")
+if (process.platform == "darwin")
 {
-	var mb = new gui.Menu({type:"menubar"});
+	var mb = new gui.Menu(
+	{
+		type: "menubar"
+	});
 	mb.createMacBuiltin("Marknote");
 	win.menu = mb;
 }
@@ -22,57 +25,58 @@ var marked = require('marked');
 var highlight = require('highlight.js');
 var editor;
 var store;
-var notes=new Array(), note="";
-var current=0;
-var defaultnote=["#Welcome to Marknote\n**Clean, easy, markdown notes.**\nDouble click to get started!"];
-var newnotetemplate="# New note";
-var noteCache=new Array();
+var notes = new Array(),
+	note = "";
+var current = 0;
+var defaultnote = ["#Welcome to Marknote\n**Clean, easy, markdown notes.**\nDouble click to get started!"];
+var newnotetemplate = "# New note";
+var noteCache = new Array();
 
-var validImageExtensions=new Array("png", "gif", "bmp", "jpeg", "jpg");
+var validImageExtensions = new Array("png", "gif", "bmp", "jpeg", "jpg");
 
 
 //Custom Renderer
 var renderer = new marked.Renderer();
 
 
-renderer.link = function (href, title, text) 
+renderer.link = function(href, title, text)
 {
-	if (href.indexOf("://")!=-1)
+	if (href.indexOf("://") != -1)
 	{
-		output="<a target=\"_blank\" href=\"" + href + "\">" + text + "</a>";
+		output = "<a target=\"_blank\" href=\"" + href + "\">" + text + "</a>";
 	}
 	else
 	{
-		output="<a target=\"_blank\" href=\"note://" + href + "\">" + text + "</a>";
+		output = "<a target=\"_blank\" href=\"note://" + href + "\">" + text + "</a>";
 	}
-	
+
 	return output;
 };
 
-renderer.listitem = function(text) 
+renderer.listitem = function(text)
 {
-	if (/^\s*\[[x ]\]\s*/.test(text)) 
+	if (/^\s*\[[x ]\]\s*/.test(text))
 	{
 		text = text
-  			.replace(/^\s*\[ \]\s*/, '<input type="checkbox" class="task-list-item-checkbox" disabled> ')
-  			.replace(/^\s*\[x\]\s*/, '<input type="checkbox" class="task-list-item-checkbox" checked disabled> ');
-    	return '<li style="list-style: none; display: list-item;">' + text + '</li>';
-  	} 
-  	else 
-  	{
-    	return '<li>' + text + '</li>';
-  	}
+			.replace(/^\s*\[ \]\s*/, '<input type="checkbox" class="task-list-item-checkbox" disabled> ')
+			.replace(/^\s*\[x\]\s*/, '<input type="checkbox" class="task-list-item-checkbox" checked disabled> ');
+		return '<li style="list-style: none; display: list-item;">' + text + '</li>';
+	}
+	else
+	{
+		return '<li>' + text + '</li>';
+	}
 };
 
-win.on('new-win-policy', function(frame, url, policy) 
+win.on('new-win-policy', function(frame, url, policy)
 {
 	policy.ignore();
-	if (url.indexOf("note://")!==-1)
+	if (url.indexOf("note://") !== -1)
 	{
-		title=url.replace("note://", "");
+		title = url.replace("note://", "");
 		for (i in notes)
 		{
-			if (getTitle(notes[i]).toLowerCase().indexOf(title.toLowerCase())!==-1)
+			if (getTitle(notes[i]).toLowerCase().indexOf(title.toLowerCase()) !== -1)
 			{
 				loadNote(i);
 				return;
@@ -87,21 +91,21 @@ win.on('new-win-policy', function(frame, url, policy)
 
 
 //Markdown Settings. Using Github styled markdown for automatic links, code blocks, and tables. 
-marked.setOptions({
-  renderer: renderer,
-  gfm: true,
-  tables: true,
-  breaks: true,
-  pedantic: false,
-  sanitize: true,
-  smartLists: true,
-  smartypants: true,
-  highlight: function (code)  //use highlight.js for syntax highlighting. 
-  {
-    return highlight.highlightAuto(code).value;
-  }
+marked.setOptions(
+{
+	renderer: renderer,
+	gfm: true,
+	tables: true,
+	breaks: true,
+	pedantic: false,
+	sanitize: true,
+	smartLists: true,
+	smartypants: true,
+	highlight: function(code) //use highlight.js for syntax highlighting. 
+		{
+			return highlight.highlightAuto(code).value;
+		}
 });
-
 
 
 
@@ -120,7 +124,7 @@ $(document).on("click", "#newNote", function()
 
 $(document).on("mousemove", function(e)
 {
-	if (e.pageX>(window.innerWidth-75) && e.pageY>(window.innerHeight-75))
+	if (e.pageX > (window.innerWidth - 75) && e.pageY > (window.innerHeight - 75))
 	{
 		$("#pageflip").css("width", "25px");
 		$("#pageflip").css("height", "25px");
@@ -135,7 +139,7 @@ $(document).on("mousemove", function(e)
 	{
 		return;
 	}
-	if (e.pageX>(window.innerWidth-200) && e.pageY < 50)
+	if (e.pageX > (window.innerWidth - 200) && e.pageY < 50)
 	{
 		$("#actions").show();
 	}
@@ -146,27 +150,35 @@ $(document).on("mousemove", function(e)
 });
 
 
-$(document).on("ready",function()
+$(document).on("ready", function()
 {
-	window.ondragover = function(e) { e.preventDefault(); return false };
-	window.ondrop = function(e) { e.preventDefault(); return false };
+	window.ondragover = function(e)
+	{
+		e.preventDefault();
+		return false
+	};
+	window.ondrop = function(e)
+	{
+		e.preventDefault();
+		return false
+	};
 
 	var holder = document.getElementById('edit');
 
-	holder.ondrop = function (e) 
+	holder.ondrop = function(e)
 	{
 		e.preventDefault();
- 		for (var i = 0; i < e.dataTransfer.files.length; ++i) 
-  		{
-    		ext=e.dataTransfer.files[i].path.split(".");
-    		ext=ext[ext.length-1];
-    		if (validImageExtensions.indexOf(ext)!=-1)
-    		{
-    			img="![](file://" + e.dataTransfer.files[i].path + ")";
-    			editor.insert(img);
-    		}
-  		}
-  		return false;
+		for (var i = 0; i < e.dataTransfer.files.length; ++i)
+		{
+			ext = e.dataTransfer.files[i].path.split(".");
+			ext = ext[ext.length - 1];
+			if (validImageExtensions.indexOf(ext) != -1)
+			{
+				img = "![](file://" + e.dataTransfer.files[i].path + ")";
+				editor.insert(img);
+			}
+		}
+		return false;
 	};
 
 	Mousetrap.bind('mod+shift+c', function()
@@ -176,7 +188,7 @@ $(document).on("ready",function()
 
 	Mousetrap.bind('mod+f', function()
 	{
-		if ($("#find").css("display")=="none")
+		if ($("#find").css("display") == "none")
 		{
 			$("#find").css("display", "block");
 			$("#findtext").focus();
@@ -184,7 +196,7 @@ $(document).on("ready",function()
 		else
 		{
 			$("#findtext").blur();
-			val=$("#findtext").val();
+			val = $("#findtext").val();
 			$("#findtext").val("");
 			window.find(val, 0, 0, 1, 0, 0, 0);
 			$("#findtext").val(val);
@@ -196,9 +208,9 @@ $(document).on("ready",function()
 	{
 		e.preventDefault();
 		current--;
-		if (current<0)
+		if (current < 0)
 		{
-			current=notes.length-1;
+			current = notes.length - 1;
 		}
 		loadNote(current);
 		$("#list").scrollTop($("#" + current).offset().top);
@@ -208,9 +220,9 @@ $(document).on("ready",function()
 	{
 		e.preventDefault();
 		current++;
-		if (current>notes.length-1)
+		if (current > notes.length - 1)
 		{
-			current=0;
+			current = 0;
 		}
 		loadNote(current);
 		$("#list").scrollTop($("#" + current).offset().top);
@@ -222,9 +234,9 @@ $(document).on("ready",function()
 		$("#findtext").val("");
 	});
 
-	Mousetrap.stopCallback=function(e, element, combo) 
+	Mousetrap.stopCallback = function(e, element, combo)
 	{
-    	return false
+		return false
 	}
 
 
@@ -242,39 +254,42 @@ $(document).on("ready",function()
 	store = new Lawnchair(
 	{
 		adapter: "dom"
-	}, function ()
-	{})
+	}, function() {})
 
-	store.exists("notes", function (s)
+	store.exists("notes", function(s)
 	{
-		if (s===false)
+		if (s === false)
 		{
-			store.save({key:'notes', notes: defaultnote});
-			notes=defaultnote;
+			store.save(
+			{
+				key: 'notes',
+				notes: defaultnote
+			});
+			notes = defaultnote;
 		}
 		else
 		{
-		
-			store.get("notes", function (n)
+
+			store.get("notes", function(n)
 			{
-				notes=n.notes;
-			
+				notes = n.notes;
+
 			});
 		}
 	});
 
 
 
-	store.exists("settings", function (s)
+	store.exists("settings", function(s)
 	{
-		if (s!==false)
+		if (s !== false)
 		{
-			store.get("settings", function (n)
+			store.get("settings", function(n)
 			{
 				$("#username").val(n.username);
 				$("#password").val(n.password);
-				syncing=n.syncing;
-				if (syncing===true)
+				syncing = n.syncing;
+				if (syncing === true)
 				{
 					login(n.username, n.password);
 					$("#syncing").prop("checked", true);
@@ -289,11 +304,11 @@ $(document).on("ready",function()
 	loadNote(current);
 	selectItem(current);
 
-	window.addEventListener('polymer-ready', function(e) 
+	window.addEventListener('polymer-ready', function(e)
 	{
-		document.getElementById("0").selected="yes";
+		document.getElementById("0").selected = "yes";
 	});
-	
+
 
 	$("#display").html(markdown);
 
@@ -308,18 +323,36 @@ $(document).on("ready",function()
 	});
 	$("paper-icon-button[icon='menu']").on("click", function()
 	{
-		$.blockUI({ overlayCSS:  { cursor: null }, css: { border: "none", cursor: null} , message: $('#settings') }); 
+		$.blockUI(
+		{
+			overlayCSS:
+			{
+				cursor: null
+			},
+			css:
+			{
+				border: "none",
+				cursor: null
+			},
+			message: $('#settings')
+		});
 	});
 	$("#saveButton").on("click", function()
 	{
 		$.unblockUI();
-		username=$("#username").val();
-		password=$("#password").val();
-		syncing=$("#syncing").prop("checked");
-		store.save({key:'settings', username: username, password: password, syncing: syncing});
-		if (syncing===true)
+		username = $("#username").val();
+		password = $("#password").val();
+		syncing = $("#syncing").prop("checked");
+		store.save(
 		{
-			login(username,password);
+			key: 'settings',
+			username: username,
+			password: password,
+			syncing: syncing
+		});
+		if (syncing === true)
+		{
+			login(username, password);
 		}
 	})
 
@@ -343,7 +376,7 @@ $(document).on("ready",function()
 			edit();
 		}
 		else
-		{	
+		{
 			display();
 		}
 	});
@@ -352,29 +385,32 @@ $(document).on("ready",function()
 //Very cusom Renderer.
 function render(markdown)
 {
-	html=marked(markdown, { renderer: renderer });
+	html = marked(markdown,
+	{
+		renderer: renderer
+	});
 	return html;
 }
 
 function login(username, password)
 {
- 	Parse.User.logIn(username, password, 
- 	{
-  		success: function(user) 
-  		{
-  			//console.log(Parse.User.current())
-  			currentuser = Parse.User.current();
-  			if (syncing)
-  			{
-  				parse_getnotes()
-  			}
-  			
-  		},
-  		error: function(user, error) 
-  		{
-   			console.log(error)
-   			signup(username, password);
-  		}
+	Parse.User.logIn(username, password,
+	{
+		success: function(user)
+		{
+			//console.log(Parse.User.current())
+			currentuser = Parse.User.current();
+			if (syncing)
+			{
+				parse_getnotes()
+			}
+
+		},
+		error: function(user, error)
+		{
+			console.log(error)
+			signup(username, password);
+		}
 	});
 }
 
@@ -384,21 +420,21 @@ function signup(username, password)
 	user.set("username", username);
 	user.set("password", password);
 
- 
-	user.signUp(null, 
+
+	user.signUp(null,
 	{
-  		success: function(user) 
-  		{
-  			login(username, password);
-  		},
-  		error: function(user, error) 
-  		{
-    		if (error.code==202)
-    		{
-    			$("#syncing").prop("checked", false);
-    			alert("Username taken or password is incorrect.");
-    		}
-  		}
+		success: function(user)
+		{
+			login(username, password);
+		},
+		error: function(user, error)
+		{
+			if (error.code == 202)
+			{
+				$("#syncing").prop("checked", false);
+				alert("Username taken or password is incorrect.");
+			}
+		}
 	});
 }
 
@@ -407,49 +443,49 @@ function parse_getnotes()
 	var query = new Parse.Query(Parse_Notes);
 	query.find(
 	{
-  		success: function(results) 
-  		{
-  			if (results.length<1)
-  			{
+		success: function(results)
+		{
+			if (results.length < 1)
+			{
 				Private_Parse_Notes.set("content", notes);
 				Private_Parse_Notes.setACL(new Parse.ACL(Parse.User.current()));
-				Private_Parse_Notes.save(null, 
+				Private_Parse_Notes.save(null,
 				{
- 					success: function(parsenote) 
- 					{
- 						parsenoteid=parsenote.id;
- 					}
- 				});
-  			}
-  			else
-  			{
-  				parsenoteid=results[0].id;
-  				if (notes!=results[0].get("content"))
+					success: function(parsenote)
+					{
+						parsenoteid = parsenote.id;
+					}
+				});
+			}
+			else
+			{
+				parsenoteid = results[0].id;
+				if (notes != results[0].get("content"))
 				{
 					notes = results[0].get("content");
 					updateList();
 				}
-  			}
-  		},
-  		error: function(error) 
-  		{
-   			alert("Error: " + error.code + " " + error.message);
-  		}
-  	});
+			}
+		},
+		error: function(error)
+		{
+			alert("Error: " + error.code + " " + error.message);
+		}
+	});
 
 }
 
 function parse_savenotes()
 {
 	var query = new Parse.Query(Parse_Notes);
-	query.get(parsenoteid, 
+	query.get(parsenoteid,
 	{
-  		success: function(n) 
-  		{
-  			n.set("content", notes)
-  			n.save();
-  		}
-  	});
+		success: function(n)
+		{
+			n.set("content", notes)
+			n.save();
+		}
+	});
 }
 
 function edit()
@@ -463,37 +499,37 @@ function edit()
 	{
 		editor.clearSelection();
 		editor.focus();
-	},1)
+	}, 1)
 }
 
 function display()
 {
 	//unselect text from doubleclick. 
 	window.getSelection().removeAllRanges()
-	note=editor.getValue();
-	notes[current]=note;
+	note = editor.getValue();
+	notes[current] = note;
 	buildCache(current);
 	$("#display").html(noteCache[current]);
 	switchDisplay("display");
 	//Move note (and cache) to the top!
 	notes.splice(0, 0, notes.splice(current, 1)[0]);
 	noteCache.splice(0, 0, noteCache.splice(current, 1)[0]);
-	current=0;
+	current = 0;
 	saveNotes();
 	updateList();
 }
 
 function switchDisplay(mode)
 {
-	if (mode=="edit")
+	if (mode == "edit")
 	{
-		$("#display").css("display","none");
+		$("#display").css("display", "none");
 		$("#edit").css("display", "block");
 	}
-	else if (mode=="display")
+	else if (mode == "display")
 	{
 		$("#edit").css("display", "none");
-		$("#display").css("display","block");
+		$("#display").css("display", "block");
 	}
 }
 
@@ -503,7 +539,11 @@ function saveNotes()
 	{
 		parse_savenotes();
 	}
-	return store.save({key:'notes', notes:notes});
+	return store.save(
+	{
+		key: 'notes',
+		notes: notes
+	});
 }
 
 function updateList()
@@ -517,8 +557,8 @@ function updateList()
 	setTimeout(function()
 	{
 		selectItem(current);
-	},1);
-	
+	}, 1);
+
 }
 
 function duplicateNote(id)
@@ -531,27 +571,27 @@ function duplicateNote(id)
 
 function deleteNote(id)
 {
-	notes.splice(current, 1); 
+	notes.splice(current, 1);
 	noteCache.splice(current, 1);
 
-	if (current>(notes.length-1))
+	if (current > (notes.length - 1))
 	{
-		current-=1;
+		current -= 1;
 	}
 	saveNotes();
 	updateList();
 	loadNote(current);
 }
- 
+
 function displayShowing()
 {
-	return $("#edit").css("display")=="none";
+	return $("#edit").css("display") == "none";
 }
 
 function addNote(note, id)
 {
-	template="<list-item id=\"{{id}}\">{{note}}</list-item>";
-	item=template.replace("{{note}}", getTitle(note)).replace("{{id}}", id);
+	template = "<list-item id=\"{{id}}\">{{note}}</list-item>";
+	item = template.replace("{{note}}", getTitle(note)).replace("{{id}}", id);
 	$("#list").append(item);
 }
 
@@ -565,38 +605,39 @@ function preloadCache()
 
 function buildCache(id)
 {
-	markdown=render(notes[id]);
-	noteCache[id]=markdown;
+	markdown = render(notes[id]);
+	noteCache[id] = markdown;
 }
 
 function selectItem(id)
 {
-	$( "list-item" ).each(function( index ) 
+	$("list-item").each(function(index)
 	{
-		$("#" + index)[0].selected="no";
+		$("#" + index)[0].selected = "no";
 	});
-	$("#" + id)[0].selected="yes";
+	$("#" + id)[0].selected = "yes";
 }
 
 function loadNote(id)
 {
-	current=id;
+	current = id;
 	if (!noteCache[id])
 	{
 		buildCache(id);
 	}
-	markdown=noteCache[id];
+	markdown = noteCache[id];
 	$("#display").html(markdown);
-	note=notes[id];
+	note = notes[id];
 	selectItem(id);
 }
+
 function newNote()
 {
 	notes.push(newnotetemplate);
 	updateList();
 	if (displayShowing())
 	{
-		loadNote(notes.length-1);		
+		loadNote(notes.length - 1);
 	}
 }
 
@@ -605,7 +646,7 @@ function getTitle(note)
 	return note.split("\n")[0].replace(/\W+/g, " ");
 }
 
-RegExp.escape= function(s) 
+RegExp.escape = function(s)
 {
-    return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+	return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 };
