@@ -400,7 +400,7 @@ function signup(username, password)
   		{
     		if (error.code==202)
     		{
-    			alert("Username taken and password is incorrect.");
+    			alert("Username taken or password is incorrect.");
     		}
   		}
 	});
