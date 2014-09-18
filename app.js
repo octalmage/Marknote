@@ -274,7 +274,7 @@ $(document).on("ready",function()
 				$("#username").val(n.username);
 				$("#password").val("********");
 				syncing=n.syncing;
-				if (n.syncing==true)
+				if (syncing===true)
 				{
 					login(n.username, n.password)
 					$("#syncing").prop("checked", true);
@@ -317,7 +317,7 @@ $(document).on("ready",function()
 		password=$("#password").val();
 		syncing=$("#syncing").prop("checked");
 		store.save({key:'settings', username: username, password: password, syncing: syncing});
-		if (syncing)
+		if (syncing===true)
 		{
 			login(username,password);
 		}
