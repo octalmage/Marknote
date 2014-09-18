@@ -424,8 +424,11 @@ function parse_getnotes()
   			else
   			{
   				parsenoteid=results[0].id;
-  				notes=results[0].get("content");
-  				updateList();
+  				if (notes!=results[0].get("content"))
+				{
+					notes = results[0].get("content");
+					updateList();
+				}
   			}
   		},
   		error: function(error) 
