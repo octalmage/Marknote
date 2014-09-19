@@ -1,4 +1,7 @@
+chromedriver
 build/
 node-webkit.app/
+cache/
+node_modules/grunt*
 node_modules/node-webkit-builder
 node_modules/selenium-webdriver
