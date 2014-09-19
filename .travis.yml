@@ -13,7 +13,6 @@ before_script:
 - mv node-webkit-v0.10.2-linux-x64/* ./
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
-- ls -l
 - sleep 5
 - java -jar selenium-server-standalone-2.43.0.jar -Dwebdriver.chrome.driver=./chromedriver &
 - sleep 10
@@ -34,3 +33,10 @@ deploy:
   on:
     tags: true
     repo: octalmage/Marknote
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/cebb2a5d2ce11e1dd8e2
+    on_success: always
+    on_failure: always 
+    on_start: false   
