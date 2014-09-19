@@ -453,7 +453,6 @@ function parse_getnotes()
 			else
 			{
 				parsenoteid = results[0].id;
-				// [bug] - UI refreshes even if there aren't updates.
 				if (notes !== results[0].get("content"))
 				{
 					notes = results[0].get("content");
@@ -651,7 +650,6 @@ function buildCache(id)
  */
 function selectItem(id)
 {
-	// [todo] - Only deselect selected list-items. 
 	$("list-item").each(function(index)
 	{
 		$("#" + index)[0].selected = "no";

@@ -6,7 +6,7 @@ module.exports = function(grunt)
 		pkg: grunt.file.readJSON("package.json"),
 		jshint:
 		{
-			files: ["app.js", "tests/tests.js", "Gruntfile.js"],
+			files: ["assets/js/app.js", "tests/tests.js", "Gruntfile.js"],
 			options:
 			{
 				globals:
@@ -20,7 +20,7 @@ module.exports = function(grunt)
 		},
 		"jsbeautifier":
 		{
-			files: ["app.js", "tests/tests.js", "Gruntfile.js"],
+			files: ["assets/js/app.js", "tests/tests.js", "Gruntfile.js"],
 			options:
 			{
 				js:
@@ -39,7 +39,7 @@ module.exports = function(grunt)
 				platforms: ["win", "osx", "linux64"],
 				buildDir: "./build"
 			},
-			src: ["index.html", "app.js", "style.css", "package.json", "js/**", "components/**", "elements/**", "node_modules/{marked,highlight.js}/**"]
+			src: ["index.html", "package.json", "assets/**", "node_modules/{marked,highlight.js}/**"]
 		}
 	});
 
@@ -51,5 +51,5 @@ module.exports = function(grunt)
 	grunt.registerTask("clean", ["jsbeautifier"]);
 	grunt.registerTask("build", ["nodewebkit"]);
 	grunt.registerTask("default", ["jshint"]);
-	
+
 };
