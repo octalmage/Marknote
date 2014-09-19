@@ -27,7 +27,7 @@ module.exports = function(grunt)
 				{
 					braceStyle: "expand",
 					indentWithTabs: true,
-					indentSize: 4,
+					indentSize: 1,
 					maxPreserveNewlines: 2
 				}
 			}
