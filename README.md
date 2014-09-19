@@ -3,8 +3,6 @@ Marknote
 
 A clean, open source, cross platform, markdown note taking app. 
 
-![](https://cloudup.com/cMU37AICDHn+)
-
 ## Building
 
 In root directory of project run:
@@ -15,6 +13,7 @@ grunt build
 
 This will create builds for Mac, Windows, and Linux in the build/ directory.
 
+![](https://cloudup.com/cMU37AICDHn+)
 
 Code by [Jason Stallings](http://jason.stallin.gs), design by [Michael Champlin](http://champl.in).
 
