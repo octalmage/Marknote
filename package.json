@@ -3,49 +3,47 @@
   "main": "index.html",
   "version": "0.4.3",
   "description": "A clean, open source, cross platform, markdown note taking app.",
-  "keywords": 
-  [
+  "keywords": [
     "markdown",
     "notes",
     "todo",
     "webkit"
   ],
-  "repository": 
-  {
+  "repository": {
     "type": "git",
     "url": "https://github.com/octalmage/Marknote"
   },
-  "window": 
-  {
+  "window": {
     "title": "Marknote",
     "toolbar": false,
     "frame": true
   },
   "author": "Jason Stallings <jason@stallin.gs>",
-  "contributors": 
-  [{
-    "name": "Michael Champlin",
-    "email": "mjchamplin@gmail.com"
-  }],
+  "contributors": [
+    {
+      "name": "Michael Champlin",
+      "email": "mjchamplin@gmail.com"
+    }
+  ],
   "license": "GPL v2",
-  "bugs": 
-  {
+  "bugs": {
     "url": "https://github.com/octalmage/Marknote/issues"
   },
   "homepage": "https://github.com/octalmage/Marknote",
   "chromium-args": "--disable-web-security",
-  "dependencies": 
-  {
+  "dependencies": {
     "marked": "~0.3.2",
     "highlight.js": "*"
   },
-  "devDependencies": 
-  {
-    "node-webkit-builder": "*",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-jsbeautifier": "^0.2.7",
+    "grunt-node-webkit-builder": "^0.2.3",
+    "node-webkit-builder": "^0.1.3",
     "selenium-webdriver": "*"
   },
-  "scripts": 
-  {
+  "scripts": {
     "test": "mocha tests/tests.js"
   }
 }
