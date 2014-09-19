@@ -1,25 +1,36 @@
 language: node_js
-
 sudo: false
-
 install:
-  - "npm install mocha -g"
-  - "npm install"
-
+- npm install mocha -g
+- npm install
 before_script:
-  - "wget http://dl.node-webkit.org/v0.10.2/chromedriver-nw-v0.10.2-linux-x64.tar.gz"
-  - "wget http://dl.node-webkit.org/v0.10.2/node-webkit-v0.10.2-linux-x64.tar.gz"
-  - "wget http://selenium-release.storage.googleapis.com/2.43/selenium-server-standalone-2.43.0.jar"
-  - "tar -zxvf chromedriver-nw-v0.10.2-linux-x64.tar.gz"
-  - "mv chromedriver-nw-v0.10.2-linux-x64/chromedriver ./"
-  - "tar -zxvf node-webkit-v0.10.2-linux-x64.tar.gz"
-  - "mv node-webkit-v0.10.2-linux-x64/* ./"
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-  - "ls -l"
-  - sleep 5 # give xvfb some time to start.
-  - "java -jar selenium-server-standalone-2.43.0.jar -Dwebdriver.chrome.driver=./chromedriver &"
-  - sleep 10
-
+- wget http://dl.node-webkit.org/v0.10.2/chromedriver-nw-v0.10.2-linux-x64.tar.gz
+- wget http://dl.node-webkit.org/v0.10.2/node-webkit-v0.10.2-linux-x64.tar.gz
+- wget http://selenium-release.storage.googleapis.com/2.43/selenium-server-standalone-2.43.0.jar
+- tar -zxvf chromedriver-nw-v0.10.2-linux-x64.tar.gz
+- mv chromedriver-nw-v0.10.2-linux-x64/chromedriver ./
+- tar -zxvf node-webkit-v0.10.2-linux-x64.tar.gz
+- mv node-webkit-v0.10.2-linux-x64/* ./
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+- ls -l
+- sleep 5
+- java -jar selenium-server-standalone-2.43.0.jar -Dwebdriver.chrome.driver=./chromedriver &
+- sleep 10
 script:
-  - "npm test"
+- npm test
+before_deploy:
+- grunt build
+- sh tests/before_deploy.sh
+deploy:
+  provider: releases
+  api_key:
+    secure: TYrr9UQG6b23nENn++ExDRLXuqTeskcwWBQrdlxoWaeU0C/ItjLsgTGWUU+L/CCCdpL3td6wKTjNvBTfrM4VFvpCSV5ONCXG54+5mKTZwV5TGoO9aT4KmW8IgnXWlJsJEQOKW5zRSsYNWP+n/QD0J3NGxtqmnvBoIRj+pxGTCjc=
+  file:
+  - "MarknoteMac.zip"
+  - "MarknoteWin.zip"
+  - "MarknoteLinux.zip"
+  skip_cleanup: true
+  on:
+    tags: true
+    repo: octalmage/Marknote
