@@ -33,6 +33,7 @@ deploy:
   on:
     tags: true
     repo: octalmage/Marknote
+    all_branches: true
 notifications:
   webhooks:
     urls:
