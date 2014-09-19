@@ -34,10 +34,8 @@ var noteCache = [];
 
 var validImageExtensions = new Array("png", "gif", "bmp", "jpeg", "jpg");
 
-
 //Custom Renderer
 var renderer = new marked.Renderer();
-
 
 renderer.link = function(href, title, text)
 {
@@ -70,7 +68,7 @@ renderer.listitem = function(text)
 };
 
 win.on('new-win-policy', function(frame, url, policy)
-{ 
+{
 	var title;
 	policy.ignore();
 	if (url.indexOf("note://") !== -1)
@@ -91,7 +89,6 @@ win.on('new-win-policy', function(frame, url, policy)
 	}
 });
 
-
 //Markdown Settings. Using Github styled markdown for automatic links, code blocks, and tables. 
 marked.setOptions(
 {
@@ -104,13 +101,10 @@ marked.setOptions(
 	smartLists: true,
 	smartypants: true,
 	highlight: function(code) //use highlight.js for syntax highlighting. 
-		{
-			return highlight.highlightAuto(code).value;
-		}
+	{
+		return highlight.highlightAuto(code).value;
+	}
 });
-
-
-
 
 $(document).on("click", "list-item", function()
 {
@@ -150,7 +144,6 @@ $(document).on("mousemove", function(e)
 		$("#actions").hide();
 	}
 });
-
 
 $(document).on("ready", function()
 {
@@ -241,8 +234,7 @@ $(document).on("ready", function()
 	Mousetrap.stopCallback = function(e, element, combo)
 	{
 		return false;
-	}
-
+	};
 
 	//Temporary access to devtools using CMD+ALT+I. 
 	Mousetrap.bind('mod+alt+i', function()
@@ -282,8 +274,6 @@ $(document).on("ready", function()
 		}
 	});
 
-
-
 	store.exists("settings", function(s)
 	{
 		if (s !== false)
@@ -313,9 +303,7 @@ $(document).on("ready", function()
 		document.getElementById("0").selected = "yes";
 	});
 
-
 	$("#display").html(markdown);
-
 
 	$("paper-icon-button[icon='close']").on("click", function()
 	{
@@ -360,19 +348,6 @@ $(document).on("ready", function()
 		}
 	});
 
-	/*$("#note").on("tripleclick",{ threshold: 600 }, function(e)
-	{
-
-		if (displayShowing())
-		{
-			edit();
-		}
-		else
-		{	
-			display();
-		}
-	})*/
-
 	$("#pageflip").on("mousedown", function()
 	{
 		if (displayShowing())
@@ -386,7 +361,11 @@ $(document).on("ready", function()
 	});
 });
 
-//Very cusom Renderer.
+/**
+ * Custom render function to setup marked options.
+ * @param  {string} markdown The markdown syntax to be rendered.
+ * @return {string}          Returns markdown rendered as HTML.
+ */
 function render(markdown)
 {
 	html = marked(markdown,
@@ -396,13 +375,17 @@ function render(markdown)
 	return html;
 }
 
+/**
+ * Tries to login to Parse.com
+ * @param  {string} username Parse.com username.
+ * @param  {string} password Parse.com password.
+ */
 function login(username, password)
 {
 	Parse.User.logIn(username, password,
 	{
 		success: function(user)
 		{
-			//console.log(Parse.User.current())
 			currentuser = Parse.User.current();
 			if (syncing)
 			{
@@ -417,12 +400,16 @@ function login(username, password)
 	});
 }
 
+/**
+ * Parse.com signup.
+ * @param  {string} username Desired username.
+ * @param  {string} password Desired password.
+ */
 function signup(username, password)
 {
 	var user = new Parse.User();
 	user.set("username", username);
 	user.set("password", password);
-
 
 	user.signUp(null,
 	{
@@ -441,6 +428,9 @@ function signup(username, password)
 	});
 }
 
+/**
+ * Syncs notes from Parse.com to local notes array.
+ */
 function parse_getnotes()
 {
 	var query = new Parse.Query(Parse_Notes);
@@ -476,9 +466,11 @@ function parse_getnotes()
 			alert("Error: " + error.code + " " + error.message);
 		}
 	});
-
 }
 
+/**
+ * Save local notes array to Parse.com
+ */
 function parse_savenotes()
 {
 	var query = new Parse.Query(Parse_Notes);
@@ -492,6 +484,9 @@ function parse_savenotes()
 	});
 }
 
+/**
+ * Opens the editor, updating the content and deselecting text.
+ */
 function edit()
 {
 	//Unselect text from doubleclick. 
@@ -506,6 +501,9 @@ function edit()
 	}, 1);
 }
 
+/**
+ * Displays the markdown, getting the content from the editor and updating/saving the notes.
+ */
 function display()
 {
 	//unselect text from doubleclick. 
@@ -523,6 +521,10 @@ function display()
 	updateList();
 }
 
+/**
+ * Uses CSS to display/hide the editor and rendered markdown.
+ * @param  {string} mode "edit" or "display".
+ */
 function switchDisplay(mode)
 {
 	if (mode === "edit")
@@ -537,19 +539,25 @@ function switchDisplay(mode)
 	}
 }
 
+/**
+ * Saves the notes to localStoreage using lawnchair.
+ */
 function saveNotes()
 {
 	if (syncing)
 	{
 		parse_savenotes();
 	}
-	return store.save(
+	store.save(
 	{
 		key: 'notes',
 		notes: notes
 	});
 }
 
+/**
+ * Updates the list of notes then highlights the current note.
+ */
 function updateList()
 {
 	$("#list").html("");
@@ -565,6 +573,10 @@ function updateList()
 
 }
 
+/**
+ * Duplicates note, saves, then updates note list.
+ * @param  {int} id Note ID.
+ */
 function duplicateNote(id)
 {
 	notes.push(notes[current]);
@@ -573,6 +585,10 @@ function duplicateNote(id)
 	updateList();
 }
 
+/**
+ * Deletes note, saves, updates list then loads a new note.
+ * @param  {int} id Note ID.
+ */
 function deleteNote(id)
 {
 	notes.splice(current, 1);
@@ -587,11 +603,20 @@ function deleteNote(id)
 	loadNote(current);
 }
 
+/**
+ * Detect if rendered markdown is currently displaying.
+ * @return {boolean} true if HTML is displaying, false if editor.
+ */
 function displayShowing()
 {
 	return $("#edit").css("display") === "none";
 }
 
+/**
+ * Adds list-item to the notes list.
+ * @param {string} note Note's markdown, the top line is used to create the title.
+ * @param {int} id   Note ID.
+ */
 function addNote(note, id)
 {
 	template = "<list-item id=\"{{id}}\">{{note}}</list-item>";
@@ -599,6 +624,9 @@ function addNote(note, id)
 	$("#list").append(item);
 }
 
+/**
+ * Preloads the noteCache array.
+ */
 function preloadCache()
 {
 	for (var i in notes)
@@ -607,12 +635,20 @@ function preloadCache()
 	}
 }
 
+/**
+ * Renders a note and stores the HTML in the noteCache array.
+ * @param  {id} id Note ID.
+ */
 function buildCache(id)
 {
 	markdown = render(notes[id]);
 	noteCache[id] = markdown;
 }
 
+/**
+ * Highlights a note in the list.
+ * @param  {int} id Note ID.
+ */
 function selectItem(id)
 {
 	// [todo] - Only deselect selected list-items. 
@@ -623,6 +659,10 @@ function selectItem(id)
 	$("#" + id)[0].selected = "yes";
 }
 
+/**
+ * Displays a note from cache and selects it in the list.
+ * @param  {id} id Note ID.
+ */
 function loadNote(id)
 {
 	current = id;
@@ -636,6 +676,9 @@ function loadNote(id)
 	selectItem(id);
 }
 
+/**
+ * Adds a new note to the end of the list, then displays it.
+ */
 function newNote()
 {
 	notes.push(newnotetemplate);
@@ -646,11 +689,20 @@ function newNote()
 	}
 }
 
+/**
+ * Generates the title by stripping non-alphabetical characters.
+ * @param  {string} note Markdown to turn into a title.
+ */
 function getTitle(note)
 {
 	return note.split("\n")[0].replace(/\W+/g, " ");
 }
 
+/**
+ * Escapes regex characters
+ * @param  {string} s String to escape.
+ * @return {string}   Escaped string.
+ */
 RegExp.escape = function(s)
 {
 	return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
