@@ -19,6 +19,7 @@ before_script:
 script:
 - npm test
 before_deploy:
+- npm install grunt -g
 - grunt build
 - sh tests/before_deploy.sh
 deploy:
