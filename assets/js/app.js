@@ -650,9 +650,15 @@ function selectItem(id)
 {
 	$("list-item").each(function(index)
 	{
-		$("#" + index)[0].selected = "no";
+		if ($("#" + index)[0].selected === "yes" && $("#" + index).attr("id") !== id)
+		{
+			$("#" + index)[0].selected = "no";
+		}
 	});
-	$("#" + id)[0].selected = "yes";
+	if ($("#" + id)[0].selected === "no")
+	{
+		$("#" + id)[0].selected = "yes";
+	}
 }
 
 /**
