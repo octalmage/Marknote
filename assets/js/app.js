@@ -571,6 +571,7 @@ function updateList()
 /**
  * Duplicates note, saves, then updates note list.
  * @param  {int} id Note ID.
+ * [todo] - Instead of recreating the list, just append the new list-item.
  */
 function duplicateNote(id)
 {
