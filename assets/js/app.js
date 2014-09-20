@@ -303,8 +303,6 @@ $(document).on("ready", function()
 		document.getElementById("0").selected = "yes";
 	});
 
-	$("#display").html(markdown);
-
 	$("paper-icon-button[icon='close']").on("click", function()
 	{
 		deleteNote(current);
