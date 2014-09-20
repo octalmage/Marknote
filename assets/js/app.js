@@ -673,6 +673,7 @@ function loadNote(id)
 	markdown = noteCache[id];
 	$("#display").html(markdown);
 	note = notes[id];
+	// [todo] - Need to make sure selectItem isn't ran multiple times.
 	selectItem(id);
 }
 
