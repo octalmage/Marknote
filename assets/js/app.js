@@ -294,9 +294,7 @@ $(document).on("ready", function()
 
 	updateList();
 	preloadCache();
-
 	loadNote(current);
-	selectItem(current);
 
 	window.addEventListener('polymer-ready', function(e)
 	{
