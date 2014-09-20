@@ -453,7 +453,7 @@ function parse_getnotes()
 			else
 			{
 				parsenoteid = results[0].id;
-				if (notes !== results[0].get("content"))
+				if (_.isEqual(notes, results[0].get("content")) === false)
 				{
 					notes = results[0].get("content");
 					updateList();
