@@ -662,9 +662,11 @@ function selectItem(id)
 /**
  * Displays a note from cache and selects it in the list.
  * @param  {id} id Note ID.
+ * @param  {boolean} select If true, highlights the loaded note in the list.
  */
-function loadNote(id)
+function loadNote(id, select)
 {
+	select = typeof select !== "undefined" ? select : true;
 	current = id;
 	if (!noteCache[id])
 	{
@@ -673,8 +675,10 @@ function loadNote(id)
 	markdown = noteCache[id];
 	$("#display").html(markdown);
 	note = notes[id];
-	// [todo] - Need to make sure selectItem isn't ran multiple times.
-	selectItem(id);
+	if (select)
+	{
+		selectItem(id);
+	}
 }
 
 /**
