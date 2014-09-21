@@ -44,6 +44,10 @@ renderer.link = function(href, title, text)
 	{
 		output = "<a target=\"_blank\" href=\"" + href + "\">" + text + "</a>";
 	}
+	else if (href.indexOf("#") !== -1)
+	{
+		output = "<a href=\"" + href + "\">" + text + "</a>";
+	}
 	else
 	{
 		output = "<a target=\"_blank\" href=\"note://" + href + "\">" + text + "</a>";
