@@ -45,5 +45,8 @@
   },
   "scripts": {
     "test": "mocha tests/tests.js"
+  },
+   "webkit": {
+    "plugin": true
   }
 }
