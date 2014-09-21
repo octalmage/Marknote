@@ -188,21 +188,19 @@ $(document).on("ready", function()
 
 	Mousetrap.bind('mod+f', function()
 	{
-		var val;
 		if ($("#find").css("display") === "none")
 		{
 			$("#find").css("display", "block");
 			$("#findtext").focus();
 		}
-		else
-		{
-			$("#findtext").blur();
-			val = $("#findtext").val();
-			$("#findtext").val("");
-			window.find(val, 0, 0, 1, 0, 0, 0);
-			$("#findtext").val(val);
-		}
+	});
 
+	Mousetrap.bind('enter', function()
+	{
+		if ($("#find").css("display") !== "none")
+		{
+			search();
+		}
 	});
 
 	Mousetrap.bind('up', function(e)
@@ -706,6 +704,17 @@ function newNote()
 function getTitle(note)
 {
 	return note.split("\n")[0].replace(/\W+/g, " ");
+}
+
+function search()
+{
+	var val;
+	$("#findtext").blur();
+	val = $("#findtext").val();
+	$("#findtext").val("");
+	window.find(val, 0, 0, 1, 0, 0, 0);
+	$("#findtext").val(val);
+	//$("#findtext").focus();
 }
 
 /**
