@@ -36,7 +36,7 @@ var validImageExtensions = new Array("png", "gif", "bmp", "jpeg", "jpg");
 
 //Custom Renderer
 var renderer = new marked.Renderer();
-
+//[todo] - Add better support for linking to headers.
 renderer.link = function(href, title, text)
 {
 	var output;
@@ -44,7 +44,7 @@ renderer.link = function(href, title, text)
 	{
 		output = "<a target=\"_blank\" href=\"" + href + "\">" + text + "</a>";
 	}
-	else if (href.indexOf("#") !== -1)
+	else if (href.indexOf("#") !== -1) //Allow linking to a header using #. 
 	{
 		output = "<a href=\"" + href + "\">" + text + "</a>";
 	}
