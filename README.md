@@ -3,17 +3,9 @@ Marknote
 
 A clean, open source, cross platform, markdown note taking app. 
 
-## Building
-
-In root directory of project run:
-```
-npm install
-grunt build
-```
-
-This will create builds for Mac, Windows, and Linux in the build/ directory.
-
 ![](https://cloudup.com/cMU37AICDHn+)
+
+To learn more about Marknote, read the [Wiki](https://github.com/octalmage/Marknote/wiki)!
 
 Code by [Jason Stallings](http://jason.stallin.gs), design by [Michael Champlin](http://champl.in).
 
