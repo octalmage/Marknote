@@ -49,7 +49,7 @@
 
   #display, #edit
   {
-    overflow: scroll;
+    overflow: auto;
   }
 
   #note
@@ -73,7 +73,7 @@
     left:200px;
     top:0px;
     background-color:#fff;
-    overflow:scroll;
+    overflow:auto;
     /*background-image: url('img/paper_fibers.png');*/
   }
 
@@ -106,7 +106,7 @@
     /*background-color: #12131c; */
     background-color: #545454;
     bottom: 0px;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
   }
 
@@ -143,7 +143,7 @@
   }
    
 
-  input
+  #settings input
   {
     background-color: transparent;
     border: 0;
