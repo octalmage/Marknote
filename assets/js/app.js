@@ -14,6 +14,15 @@ if (process.platform === "darwin")
 	win.menu = mb;
 }
 
+
+// Create a tray icon
+var tray = new gui.Tray({ title: 'Tasks' });
+
+// Give it a menu
+var menu = new gui.Menu();
+
+tray.menu = menu;
+
 //Parse Variables.
 Parse.initialize("VvmNgHcupWn43L9ThaNDiIldMSjOXiLvd7DR7wTq", "DTAv28KMYt5pYlY3Q1yDJ3Tvm2FOViL4io9deBBt");
 var Parse_Notes = Parse.Object.extend("Notes");
@@ -371,6 +380,27 @@ function render(markdown)
 		renderer: renderer
 	});
 	return html;
+}
+
+function getTasks()
+{
+	for (var i in notes)
+	{
+    	found=notes[i].match(/\s*\[[x ]\]\s*.*\n/g);
+    	for (var x in found)
+    	{
+    		if (found[x].indexOf("[x]") !==-1)
+    		{
+    			label=found[x].replace("[x]", "");
+    			menu.append(new gui.MenuItem({ type: 'checkbox', label: label, checked: true}));
+    		}
+    		else
+    		{
+    			label=found[x].replace("[ ]", "");
+    			menu.append(new gui.MenuItem({ type: 'checkbox', label: label, checked: false}));
+    		}
+    	}
+	}
 }
 
 /**
