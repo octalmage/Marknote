@@ -454,9 +454,9 @@ function parse_getnotes()
 				if (_.isEqual(notes, results[0].get("content")) === false) //Cloud copy does not match local copy.
 				{
 					notes = results[0].get("content"); //Copy the cloud copy into memory. 
-					loadNote(current); //Update the note you're currently viewing. 
 					preloadCache(); //Update the cache. 
 					updateList(); //Update the list. 
+					loadNote(current); //Update the note you're currently viewing. 
 				}
 			}
 		},
