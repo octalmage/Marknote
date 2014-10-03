@@ -57,6 +57,7 @@
     editor.setTheme("ace/theme/github");
     editor.getSession().setMode("ace/mode/markdown");
     editor.setShowPrintMargin(false);
+    editor.getSession().setUseWrapMode(true);
     </script>
 
 <div id="actions">
@@ -73,6 +74,7 @@
 
   <div id="settings" style="display:none; padding:10px; text-align:left; border:none;">
     <h3>Settings</h3><br>
+    Editor word wrap <input id="wrap" type="checkbox"><br>
     Syncing <input id="syncing" type="checkbox"><br>
     <input type="text" id="username" placeholder="Username:" ><br>
     <input type="password" id="password" placeholder="Password:" style="margin-top:10px;"><br>
