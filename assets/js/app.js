@@ -19,6 +19,7 @@ Parse.initialize("VvmNgHcupWn43L9ThaNDiIldMSjOXiLvd7DR7wTq", "DTAv28KMYt5pYlY3Q1
 var Parse_Notes = Parse.Object.extend("Notes");
 var Private_Parse_Notes = new Parse_Notes();
 var syncing;
+var wrap=true;
 var parsenoteid;
 
 var marked = require('marked');
@@ -285,10 +286,21 @@ $(document).on("ready", function()
 				$("#username").val(n.username);
 				$("#password").val(n.password);
 				syncing = n.syncing;
+				wrap = n.wrap;
 				if (syncing === true)
 				{
 					login(n.username, n.password);
 					$("#syncing").prop("checked", true);
+				}
+				if (wrap===true)
+				{
+					editor.getSession().setUseWrapMode(true);
+					$("#wrap").prop("checked", true);
+				}
+				else
+				{
+					editor.getSession().setUseWrapMode(false);
+					$("#wrap").prop("checked", false);
 				}
 			});
 		}
@@ -333,16 +345,26 @@ $(document).on("ready", function()
 		username = $("#username").val();
 		password = $("#password").val();
 		syncing = $("#syncing").prop("checked");
+		wrap = $("#wrap").prop("checked");
 		store.save(
 		{
 			key: 'settings',
 			username: username,
 			password: password,
+			wrap:     wrap,
 			syncing: syncing
 		});
 		if (syncing === true)
 		{
 			login(username, password);
+		}
+		if (wrap===true)
+		{
+			editor.getSession().setUseWrapMode(true);
+		}
+		else
+		{
+			editor.getSession().setUseWrapMode(false);
 		}
 	});
 
