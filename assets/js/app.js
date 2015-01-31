@@ -105,10 +105,18 @@ marked.setOptions(
 	sanitize: false,
 	smartLists: true,
 	smartypants: true,
-	highlight: function(code) //use highlight.js for syntax highlighting. 
-	{
-		return highlight.highlightAuto(code).value;
-	}
+	highlight: function(code, lang) //use highlight.js for syntax highlighting. 
+	{   
+        	try
+        	{
+            		content = highlight.highlight(lang, code).value;
+        	}
+        	catch (err)
+        	{
+            		content = highlight.highlightAuto(code).value;
+        	}
+        	return content;
+    	} 
 });
 
 $(document).on("click", "list-item", function()
