@@ -106,7 +106,9 @@ marked.setOptions(
 	smartLists: true,
 	smartypants: true,
 	highlight: function(code, lang) //use highlight.js for syntax highlighting. 
-	{   
+	{
+		if (!lang) return highlight.highlightAuto(code).value;
+        	
         	try
         	{
             		content = highlight.highlight(lang, code).value;
