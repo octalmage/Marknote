@@ -19,7 +19,7 @@ Parse.initialize("VvmNgHcupWn43L9ThaNDiIldMSjOXiLvd7DR7wTq", "DTAv28KMYt5pYlY3Q1
 var Parse_Notes = Parse.Object.extend("Notes");
 var Private_Parse_Notes = new Parse_Notes();
 var syncing;
-var wrap=true;
+var wrap = true;
 var parsenoteid;
 
 var marked = require('marked');
@@ -108,17 +108,17 @@ marked.setOptions(
 	highlight: function(code, lang) //use highlight.js for syntax highlighting. 
 	{
 		if (!lang) return highlight.highlightAuto(code).value;
-        	
-        	try
-        	{
-            		content = highlight.highlight(lang, code).value;
-        	}
-        	catch (err)
-        	{
-            		content = highlight.highlightAuto(code).value;
-        	}
-        	return content;
-    	} 
+
+		try
+		{
+			content = highlight.highlight(lang, code).value;
+		}
+		catch (err)
+		{
+			content = highlight.highlightAuto(code).value;
+		}
+		return content;
+	}
 });
 
 $(document).on("click", "list-item", function()
@@ -223,7 +223,7 @@ $(document).on("ready", function()
 		}
 		loadNote(current);
 
-		$("#list").scrollTop((current-1)*29)
+		$("#list").scrollTop((current - 1) * 29);
 	});
 
 	Mousetrap.bind('down', function(e)
@@ -235,7 +235,7 @@ $(document).on("ready", function()
 		}
 		loadNote(current);
 
-		$("#list").scrollTop((current-1)*29)
+		$("#list").scrollTop((current - 1) * 29);
 	});
 
 	Mousetrap.bind('esc', function()
@@ -302,7 +302,7 @@ $(document).on("ready", function()
 					login(n.username, n.password);
 					$("#syncing").prop("checked", true);
 				}
-				if (wrap===true)
+				if (wrap === true)
 				{
 					editor.getSession().setUseWrapMode(true);
 					$("#wrap").prop("checked", true);
@@ -361,14 +361,14 @@ $(document).on("ready", function()
 			key: 'settings',
 			username: username,
 			password: password,
-			wrap:     wrap,
+			wrap: wrap,
 			syncing: syncing
 		});
 		if (syncing === true)
 		{
 			login(username, password);
 		}
-		if (wrap===true)
+		if (wrap === true)
 		{
 			editor.getSession().setUseWrapMode(true);
 		}
