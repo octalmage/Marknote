@@ -669,7 +669,7 @@ function preloadCache()
 
 /**
  * Renders a note and stores the HTML in the noteCache array.
- * @param  {id} id Note ID.
+ * @param  {int} id Note ID.
  */
 function buildCache(id)
 {
