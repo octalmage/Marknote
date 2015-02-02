@@ -33,6 +33,13 @@ var defaultnote = ["#Welcome to Marknote\n**Clean, easy, markdown notes.**\nDoub
 var newnotetemplate = "# New note";
 var noteCache = [];
 
+//API Variables. 
+var events = require('events');
+var api = new events.EventEmitter();
+var fs = require('fs');
+//This is needed so plugins can't crash the app.  
+process.on("uncaughtException", function(e) { console.log(e) });
+
 var validImageExtensions = new Array("png", "gif", "bmp", "jpeg", "jpg");
 
 //Custom Renderer
@@ -123,6 +130,7 @@ marked.setOptions(
 
 $(document).on("click", "list-item", function()
 {
+	api.emit("noteclicked", {note: $(this).attr("id")});
 	if (displayShowing())
 	{
 		loadNote($(this).attr("id"));
@@ -389,6 +397,24 @@ $(document).on("ready", function()
 			display();
 		}
 	});
+
+	//Load plugins.
+	fs.readdir('./plugins/', function(err,files)
+	{
+    	if(err) console.log(err);
+    	files.forEach(function(file)
+    	{
+    		if (file.indexOf(".js") == file.length-3)
+    		{
+				var s = document.createElement("script");
+				s.type = "text/javascript";
+				s.src = "plugins/" + file;
+				$("head").append(s);
+				console.log("Loaded: " + file);
+    		}
+    	});
+    	api.emit("appready");
+ 	});
 });
 
 /**
@@ -530,6 +556,8 @@ function edit()
 		editor.clearSelection();
 		editor.focus();
 	}, 1);
+
+	api.emit("editing", {note: current});
 }
 
 /**
@@ -550,6 +578,8 @@ function display()
 	current = 0;
 	saveNotes();
 	updateList();
+
+	api.emit("displaying", {note: current});
 }
 
 /**
@@ -704,6 +734,7 @@ function selectItem(id)
 function loadNote(id, select)
 {
 	select = typeof select !== "undefined" ? select : true;
+	var oldnote=id;
 	current = id;
 	if (!noteCache[id])
 	{
@@ -716,6 +747,8 @@ function loadNote(id, select)
 	{
 		selectItem(id);
 	}
+
+	api.emit("noteloaded", {note: current, previousnote: oldnote});
 }
 
 /**
@@ -732,12 +765,33 @@ function newNote()
 }
 
 /**
+ * API function to create a new note in the background. 
+ * @param  {string} content Markdown to set as the notes content. 
+ */
+function createNote(content)
+{
+	notes.push(content);
+	updateList();
+	return notes.length;
+}
+
+/**
  * Generates the title by stripping non-alphabetical characters.
  * @param  {string} note Markdown to turn into a title.
  */
 function getTitle(note)
 {
 	return note.split("\n")[0].replace(/\W+/g, " ");
+}
+
+/**
+ * API function to get the title of a note.
+ * @param  {int} id Note ID. 
+ * @return {string}    The title of a note. 
+ */		
+function getNoteTitle(id)
+{
+	return getTitle(notes[id]);
 }
 
 function search()
