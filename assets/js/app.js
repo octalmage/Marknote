@@ -728,7 +728,7 @@ function selectItem(id)
 
 /**
  * Displays a note from cache and selects it in the list.
- * @param  {id} id Note ID.
+ * @param  {int} id Note ID.
  * @param  {boolean} select If true, highlights the loaded note in the list.
  */
 function loadNote(id, select)
