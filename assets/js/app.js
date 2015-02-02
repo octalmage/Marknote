@@ -130,7 +130,6 @@ marked.setOptions(
 
 $(document).on("click", "list-item", function()
 {
-	api.emit("noteclicked", {note: $(this).attr("id")});
 	if (displayShowing())
 	{
 		loadNote($(this).attr("id"));
