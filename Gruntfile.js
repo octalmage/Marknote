@@ -36,7 +36,7 @@ module.exports = function(grunt)
 		{
 			options:
 			{
-				platforms: ["win", "osx", "linux64"],
+				platforms: ["win32", "osx32", "linux64"],
 				version: "0.11.5",
 				buildDir: "./build"
 			},
