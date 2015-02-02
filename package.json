@@ -1,7 +1,7 @@
 {
   "name": "Marknote",
   "main": "index.html",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "A clean, open source, cross platform, markdown note taking app.",
   "keywords": [
     "markdown",
