@@ -405,7 +405,6 @@ $(document).on("ready", function()
     		if(err) console.log(err);
     		files.forEach(function(file)
     		{
-    	api.emit("appready");
     			if (file.indexOf(".js") == file.length-3)
     			{
 					var s = document.createElement("script");
@@ -417,6 +416,7 @@ $(document).on("ready", function()
     		});
 
     		//Let plugins know everything has finished loading. 
+    		api.emit("apiready");
  		});
  	}
 });
