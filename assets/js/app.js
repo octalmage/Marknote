@@ -398,22 +398,27 @@ $(document).on("ready", function()
 	});
 
 	//Load plugins.
-	fs.readdir('./plugins/', function(err,files)
+	if (fs.existsSync('./plugins/'))
 	{
-    	if(err) console.log(err);
-    	files.forEach(function(file)
-    	{
-    		if (file.indexOf(".js") == file.length-3)
+		fs.readdir('./plugins/', function(err,files)
+		{
+    		if(err) console.log(err);
+    		files.forEach(function(file)
     		{
-				var s = document.createElement("script");
-				s.type = "text/javascript";
-				s.src = "plugins/" + file;
-				$("head").append(s);
-				console.log("Loaded: " + file);
-    		}
-    	});
     	api.emit("appready");
- 	});
+    			if (file.indexOf(".js") == file.length-3)
+    			{
+					var s = document.createElement("script");
+					s.type = "text/javascript";
+					s.src = "plugins/" + file;
+					$("head").append(s);
+					console.log("Loaded plugin: " + file);
+    			}
+    		});
+
+    		//Let plugins know everything has finished loading. 
+ 		});
+ 	}
 });
 
 /**
