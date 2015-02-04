@@ -22,8 +22,8 @@ var syncing;
 var wrap = true;
 var parsenoteid;
 
-var marked = require('marked');
-var highlight = require('highlight.js');
+var marked = require("marked");
+var highlight = require("highlight.js");
 var editor;
 var store;
 var notes = [],
