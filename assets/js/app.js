@@ -436,6 +436,7 @@ $(document).on("ready", function()
  */
 function render(markdown)
 {
+	//Process "render" hook for plugins. 
 	markdown = processHook("render", markdown);
 	
 	html = marked(markdown,
