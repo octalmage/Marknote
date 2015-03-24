@@ -32,6 +32,7 @@ var current = 0;
 var defaultnote = ["#Welcome to Marknote\n**Clean, easy, markdown notes.**\nDouble click to get started!"];
 var newnotetemplate = "# New note";
 var noteCache = [];
+var hooks = [];
 
 //API Variables. 
 var events = require("events");
@@ -331,10 +332,6 @@ $(document).on("ready", function()
 		}
 	});
 
-	updateList();
-	preloadCache();
-	loadNote(current, false);
-
 	window.addEventListener('polymer-ready', function(e)
 	{
 		document.getElementById("0").selected = "yes";
@@ -425,8 +422,19 @@ $(document).on("ready", function()
 
     		//Let plugins know everything has finished loading. 
     		api.emit("apiready");
+			updateList();
+			preloadCache();
+			loadNote(current, false);
  		});
  	}
+	else
+	{
+		updateList();
+		preloadCache();
+		loadNote(current, false);	
+	}
+	
+
 });
 
 /**
@@ -436,6 +444,9 @@ $(document).on("ready", function()
  */
 function render(markdown)
 {
+	//Process "render" hook for plugins. 
+	markdown = processHook("render", markdown);
+	
 	html = marked(markdown,
 	{
 		renderer: renderer
@@ -806,6 +817,36 @@ function getTitle(note)
 function getNoteTitle(id)
 {
 	return getTitle(notes[id]);
+}
+
+/**
+ * Add a hook callback from a plugin.
+ * @param {string} hook The hook name.
+ * @param {string} callback The function to call when the hook is processed.
+ */	
+function addHook(hook, callback)
+{
+	if (typeof hooks[hook] == "undefined")
+	{
+		hooks[hook] = [];
+	}
+	hooks[hook].push(callback);
+}
+
+/**
+ * Process hook and run all listed functions.
+ * @param {string} hook The hook name.
+ * @param {string} content The content/string to process.
+ * @return {string} The content after plugins have processed it.
+ */	
+function processHook(hook, content)
+{
+	for (var x in hooks[hook])
+	{
+			content=hooks[hook][x](content);
+	}
+	
+	return content;
 }
 
 function search()
