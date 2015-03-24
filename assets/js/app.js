@@ -809,6 +809,11 @@ function getNoteTitle(id)
 	return getTitle(notes[id]);
 }
 
+/**
+ * Add a hook callback from a plugin.
+ * @param {string} hook The hook name.
+ * @param {string} callback The function to call when the hook is processed.
+ */	
 function addHook(hook, callback)
 {
 	if (typeof hooks[hook] == "undefined")
@@ -818,6 +823,12 @@ function addHook(hook, callback)
 	hooks[hook].push(callback);
 }
 
+/**
+ * Process hook and run all listed functions.
+ * @param {string} hook The hook name.
+ * @param {string} content The content/string to process.
+ * @return {string} The content after plugins have processed it.
+ */	
 function processHook(hook, content)
 {
 	for (var x in hooks[hook])
