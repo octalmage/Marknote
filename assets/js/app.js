@@ -37,8 +37,9 @@ var noteCache = [];
 var events = require("events");
 var api = new events.EventEmitter();
 var fs = require("fs");
+
 //This is needed so plugins can't crash the app.  
-process.on("uncaughtException", function(e) { console.log(e) });
+process.on("uncaughtException", function(e) { console.log(e); });
 
 var validImageExtensions = new Array("png", "gif", "bmp", "jpeg", "jpg");
 
