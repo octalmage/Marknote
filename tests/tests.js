@@ -11,7 +11,7 @@ var notes2 = Array();
 
 test.describe('Marknote', function()
 {
-	this.timeout(50000);
+	this.timeout(30000);
 	test.describe('Notes', function()
 	{
 		test.it('Has notes.', function()
