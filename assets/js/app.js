@@ -263,10 +263,17 @@ $(document).on("ready", function()
 		win.showDevTools();
 	});
 
-	/*Mousetrap.bind('up up down down left right left right b a', function() 
+	Mousetrap.bind("up up down down left right left right b a", function() 
 	{
-		console.log("KONAMI")
-	});*/
+		if ($("#display").css("background-image") != "none")
+		{
+			$("#display").css("background-image", "none");
+		}
+		else
+		{
+			$("#display").css("background-image", "url('http://media1.giphy.com/media/AQvUFtbARPzsQ/giphy.gif')");
+		}
+	});
 
 	store = new Lawnchair(
 	{
