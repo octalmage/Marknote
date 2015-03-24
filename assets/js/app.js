@@ -785,7 +785,9 @@ function createNote(content)
  */
 function getTitle(note)
 {
-	return note.split("\n")[0].replace(/\W+/g, " ");
+	return note.split("\n")[0] //Grab the first line.
+		.replace(/\(.*\)/g, "") //Remove links.
+		.replace(/\W+/g, " "); //Remove all non letters.
 }
 
 /**
