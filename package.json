@@ -41,7 +41,7 @@
     "grunt-jsbeautifier": "^0.2.7",
     "grunt-node-webkit-builder": "^1.0.0",
     "node-webkit-builder": "^1.0.8",
-    "selenium-webdriver": "*"
+    "selenium-webdriver": "2.43.5"
   },
   "scripts": {
     "test": "mocha tests/tests.js"
