@@ -1,4 +1,4 @@
-var gui = require('nw.gui');
+var gui = require("nw.gui");
 var win = gui.Window.get();
 var clipboard = gui.Clipboard.get();
 var currentuser;
@@ -34,9 +34,9 @@ var newnotetemplate = "# New note";
 var noteCache = [];
 
 //API Variables. 
-var events = require('events');
+var events = require("events");
 var api = new events.EventEmitter();
-var fs = require('fs');
+var fs = require("fs");
 //This is needed so plugins can't crash the app.  
 process.on("uncaughtException", function(e) { console.log(e) });
 
