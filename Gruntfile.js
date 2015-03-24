@@ -37,7 +37,7 @@ module.exports = function(grunt)
 			options:
 			{
 				platforms: ["win32", "osx32", "linux64"],
-				version: "0.11.5",
+				version: "0.11.6",
 				buildDir: "./build"
 			},
 			src: ["index.html", "package.json", "assets/**", "node_modules/{marked,highlight.js}/**"]
