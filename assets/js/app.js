@@ -223,30 +223,6 @@ $(document).on("ready", function()
 		}
 	});
 
-	Mousetrap.bind('up', function(e)
-	{
-		current--;
-		if (current < 0)
-		{
-			current = notes.length - 1;
-		}
-		loadNote(current);
-
-		$("#list").scrollTop((current - 1) * 29);
-	});
-
-	Mousetrap.bind('down', function(e)
-	{
-		current++;
-		if (current > notes.length - 1)
-		{
-			current = 0;
-		}
-		loadNote(current);
-
-		$("#list").scrollTop((current - 1) * 29);
-	});
-
 	Mousetrap.bind('esc', function()
 	{
 		$("#find").css("display", "none");
