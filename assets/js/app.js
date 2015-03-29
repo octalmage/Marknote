@@ -307,7 +307,8 @@ $(document).on("ready", function()
 			});
 		}
 	});
-
+	
+	//Highlight the first note in the list. 
 	window.addEventListener('polymer-ready', function(e)
 	{
 		document.getElementById("0").selected = "yes";
