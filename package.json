@@ -33,7 +33,7 @@
   "chromium-args": "--disable-web-security",
   "dependencies": {
     "marked": "~0.3.2",
-    "highlight.js": "*"
+    "highlight.js": "^8.1.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
