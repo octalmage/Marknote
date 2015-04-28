@@ -5,3 +5,5 @@ cache/
 node_modules/
 plugins/
 .atom-build.json
+*.zip
+*.app
