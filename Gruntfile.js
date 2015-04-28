@@ -38,7 +38,8 @@ module.exports = function(grunt)
 			{
 				platforms: ["win32", "osx64", "linux32"],
 				version: "0.11.6",
-				buildDir: "./build"
+				buildDir: "./build",
+				macIcns: "./assets/logo.icns"
 			},
 			src: ["index.html", "package.json", "assets/**", "node_modules/{marked,highlight.js}/**"]
 		}
