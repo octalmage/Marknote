@@ -1,6 +1,5 @@
 chromedriver
 build/
-node-webkit.app/
 cache/
 node_modules/
 plugins/
