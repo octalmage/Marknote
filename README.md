@@ -3,6 +3,8 @@ Marknote
 
 A clean, open source, cross platform, markdown note taking app. 
 
+Marknote supports HTML/JavaScript in notes, making the possibilities endless. 
+
 ![](https://cloudup.com/cMU37AICDHn+)
 
 To learn more about Marknote, read the [Wiki](https://github.com/octalmage/Marknote/wiki)!
