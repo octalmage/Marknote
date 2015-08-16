@@ -1,7 +1,7 @@
 Marknote
 ========
 
-A clean, open source, cross platform, markdown note taking app. 
+> A clean, open source, cross platform, markdown note taking app. 
 
 Marknote supports HTML/JavaScript in notes, making the possibilities endless. 
 
