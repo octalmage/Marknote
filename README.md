@@ -5,7 +5,7 @@ Marknote
 
 Marknote supports HTML/JavaScript in notes, making the possibilities endless. 
 
-![](https://cloudup.com/cMU37AICDHn+)
+![](https://cldup.com/cwDCILrwch.png)
 
 To learn more about Marknote, read the [Wiki](https://github.com/octalmage/Marknote/wiki)!
 
