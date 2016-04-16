@@ -130,6 +130,32 @@ marked.setOptions(
 	}
 });
 
+$(document).on("change", "input[type='checkbox']", function(e)
+{
+	// Get the new checked status.
+	var status=($(this).attr("checked")) ? true : false;
+	// Create our new checkbox markdown.
+	var newCheckbox = (status === true) ? '- [x] ' : '- [ ] ';
+
+	// Get the index of the checkbox that was clicked.
+	var index = $(".task-list-item-checkbox").index(this);
+
+	// Start nth at -1, since it will be incremented before it's used, and we want to start a 0.
+	var nth=-1;
+
+	// Loop till we get to our checkbox at "index".
+	notes[current] = notes[current].replace(/-\s*\[[x\s]\]\s/gi, function (match)
+	{
+		nth++;
+		return (nth === index) ? newCheckbox : match;
+	});
+
+	// Rebuild the cache, reload the editor, and save it!
+	buildCache(current);
+	loadNote(current);
+	saveNotes();
+});
+
 $(document).on("click", "list-item", function()
 {
 	if (displayShowing())
