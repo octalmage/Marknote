@@ -29,7 +29,7 @@ var store;
 var notes = [],
 	note = "";
 var current = 0;
-var defaultnote = ["#Welcome to Marknote!\n**This is markdown.** Click the bottom right corner to get started."];
+var defaultnote = ["# Welcome to Marknote!\n**This is markdown.** Click the bottom right corner to get started."];
 var newnotetemplate = "# New note";
 var noteCache = [];
 var hooks = [];
