@@ -515,7 +515,7 @@ function cloud_getnotes()
 function cloud_savenotes()
 {
 	var userId = firebase.auth().currentUser.uid;
-  firebase.database().ref('notes/' + userId).set(notes);
+	firebase.database().ref('notes/' + userId).set(notes);
 }
 
 /**
