@@ -14,14 +14,18 @@ if (process.platform === "darwin")
 	win.menu = mb;
 }
 
-//Parse Variables.
-Parse.initialize("VvmNgHcupWn43L9ThaNDiIldMSjOXiLvd7DR7wTq", "DTAv28KMYt5pYlY3Q1yDJ3Tvm2FOViL4io9deBBt");
-var Parse_Notes = Parse.Object.extend("Notes");
-var Private_Parse_Notes = new Parse_Notes();
+// Firebase setup.
+var config = {
+	apiKey: "AIzaSyDtYLpfW_yRF273-N6iwZDHDX7xG8Nt5_g",
+	authDomain: "marknote-681e3.firebaseapp.com",
+	databaseURL: "https://marknote-681e3.firebaseio.com",
+	storageBucket: "marknote-681e3.appspot.com",
+	messagingSenderId: "809473583891"
+};
+firebase.initializeApp(config);
+
 var syncing;
 var wrap = true;
-var parsenoteid;
-
 var marked = require("marked");
 var highlight = require("highlight.js");
 var editor;
@@ -458,95 +462,49 @@ function render(markdown)
 }
 
 /**
- * Tries to login to Parse.com
+ * Tries to login to Firebase
  * @param  {string} username Parse.com username.
  * @param  {string} password Parse.com password.
  */
 function login(username, password)
 {
-	Parse.User.logIn(username, password,
-	{
-		success: function(user)
-		{
-			currentuser = Parse.User.current();
-			if (syncing)
-			{
-				parse_getnotes();
-			}
-
-		},
-		error: function(user, error)
-		{
-			signup(username, password);
-		}
+	firebase.auth().signInWithEmailAndPassword(username, password).then(function() {
+		cloud_getnotes();
+	}).catch(function(error) {
+		signup(username, password);
 	});
 }
 
 /**
- * Parse.com signup.
+ * Firebase signup.
  * @param  {string} username Desired username.
  * @param  {string} password Desired password.
  */
 function signup(username, password)
 {
-	var user = new Parse.User();
-	user.set("username", username);
-	user.set("password", password);
+	firebase.auth().createUserWithEmailAndPassword(username, password).catch(function(error) {
+		var errorCode = error.code;
+		var errorMessage = error.message;
 
-	user.signUp(null,
-	{
-		success: function(user)
-		{
-			login(username, password);
-		},
-		error: function(user, error)
-		{
-			if (error.code === 202)
-			{
-				$("#syncing").prop("checked", false);
-				alert("Username taken or password is incorrect.");
-			}
-		}
+		$("#syncing").prop("checked", false);
+		alert("Username taken or password is incorrect.");
 	});
 }
 
 /**
  * Syncs notes from Parse.com to local notes array.
  */
-function parse_getnotes()
+function cloud_getnotes()
 {
-	var query = new Parse.Query(Parse_Notes);
-	query.find(
-	{
-		success: function(results)
-		{
-			if (results.length < 1)
-			{
-				Private_Parse_Notes.set("content", notes);
-				Private_Parse_Notes.setACL(new Parse.ACL(Parse.User.current()));
-				Private_Parse_Notes.save(null,
-				{
-					success: function(parsenote)
-					{
-						parsenoteid = parsenote.id;
-					}
-				});
-			}
-			else
-			{
-				parsenoteid = results[0].id;
-				if (_.isEqual(notes, results[0].get("content")) === false) //Cloud copy does not match local copy.
-				{
-					notes = results[0].get("content"); //Copy the cloud copy into memory. 
-					preloadCache(); //Update the cache. 
-					updateList(); //Update the list. 
-					loadNote(current); //Update the note you're currently viewing. 
-				}
-			}
-		},
-		error: function(error)
-		{
-			alert("Error: " + error.code + " " + error.message);
+	var userId = firebase.auth().currentUser.uid;
+	firebase.database().ref('/notes/' + userId).once('value').then(function(snapshot) {
+		if (snapshot.val()) {
+			notes = snapshot.val();
+			preloadCache(); //Update the cache.
+			updateList(); //Update the list.
+			loadNote(current); //Update the note you're currently viewing.
+		} else {
+			cloud_savenotes();
 		}
 	});
 }
@@ -554,17 +512,10 @@ function parse_getnotes()
 /**
  * Save local notes array to Parse.com
  */
-function parse_savenotes()
+function cloud_savenotes()
 {
-	var query = new Parse.Query(Parse_Notes);
-	query.get(parsenoteid,
-	{
-		success: function(n)
-		{
-			n.set("content", notes);
-			n.save();
-		}
-	});
+	var userId = firebase.auth().currentUser.uid;
+	firebase.database().ref('notes/' + userId).set(notes);
 }
 
 /**
@@ -633,7 +584,7 @@ function saveNotes()
 {
 	if (syncing)
 	{
-		parse_savenotes();
+		cloud_savenotes();
 	}
 	store.save(
 	{
