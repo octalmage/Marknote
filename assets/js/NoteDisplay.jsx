@@ -36,6 +36,15 @@ const styles = {
   note: {
     padding: '0 10px',
     outline: '0',
+    overflow: 'hidden',
+    '& pre': {
+      marginLeft: '-10px !important',
+      color: '#000',
+      padding: '5px',
+      backgroundColor: '#f8f8f8',
+      wordWrap: 'break-word',
+      whiteSpace: 'pre-wrap',
+    },
   },
   actions: {
     position: 'fixed',
