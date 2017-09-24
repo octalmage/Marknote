@@ -6,6 +6,7 @@ enableLiveReload();
 const app = electron.app;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
+const shell = electron.shell;
 
 const path = require('path');
 const url = require('url');
@@ -36,6 +37,18 @@ function createWindow() {
     // when you should delete the corresponding element.
     mainWindow = null;
   });
+
+  // TODO: I'd feel better about transforming the links on render.
+  // Support external links.
+  const handleRedirect = (e, newUrl) => {
+    if (newUrl !== mainWindow.getURL()) {
+      e.preventDefault();
+      shell.openExternal(newUrl);
+    }
+  };
+
+  mainWindow.webContents.on('will-navigate', handleRedirect);
+  mainWindow.webContents.on('new-window', handleRedirect);
 }
 
 // This method will be called when Electron has finished
