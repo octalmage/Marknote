@@ -25,7 +25,7 @@ const styles = {
 
 const ListItem = ({ classes, children, selected, onClick }) => (
   <div
-    onClick={onClick}
+    onMouseDown={onClick}
     role="menuitem"
     tabIndex="-1"
     className={classNames(classes.listitem, { [classes.active]: selected })}

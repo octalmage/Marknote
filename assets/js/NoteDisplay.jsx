@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
 import ReactMarkdown from 'react-markdown';
 import classNames from 'classnames';
+import IconButton from 'material-ui/IconButton';
+import ActionDelete from 'material-ui/svg-icons/action/delete';
+import Theme from 'material-ui/styles/MuiThemeProvider';
 import brace from 'brace'; // eslint-disable-line no-unused-vars
 import AceEditor from 'react-ace';
 import 'brace/mode/markdown';
@@ -30,6 +33,12 @@ const styles = {
   note: {
     padding: '0 10px',
   },
+  actions: {
+    position: 'fixed',
+    top: '0px',
+    right: '0px',
+    zIndex: '5',
+  },
 };
 
 class NoteDisplay extends React.Component {
@@ -38,6 +47,7 @@ class NoteDisplay extends React.Component {
 
     this.state = {
       isPageFlipActive: false,
+      isActionMenuActive: false,
       isEditorActive: false,
       currentNote: props.note,
     };
@@ -60,6 +70,12 @@ class NoteDisplay extends React.Component {
     } else {
       this.setState({ isPageFlipActive: false });
     }
+
+    if (x > (window.innerWidth - 200) && y < 50) {
+      this.setState({ isActionMenuActive: true });
+    } else {
+      this.setState({ isActionMenuActive: false });
+    }
   }
 
   onPageFlip() {
@@ -74,18 +90,19 @@ class NoteDisplay extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
-    const { isPageFlipActive, isEditorActive, currentNote } = this.state;
+    const { classes, onDeleteNote } = this.props;
+    const { isPageFlipActive, isEditorActive, currentNote, isActionMenuActive } = this.state;
     return (
-      <div
-        className={classes.notedisplay}
-        onMouseMove={e => this.onMouseMove({ x: e.pageX, y: e.pageY })}
-      >
-        <div className={classNames(classes.note, { [classes.hidden]: isEditorActive })}>
-          <ReactMarkdown source={currentNote} />
-        </div>
-        <div>
-          { isEditorActive &&
+      <Theme>
+        <div
+          className={classes.notedisplay}
+          onMouseMove={e => this.onMouseMove({ x: e.pageX, y: e.pageY })}
+        >
+          <div className={classNames(classes.note, { [classes.hidden]: isEditorActive })}>
+            <ReactMarkdown source={currentNote} />
+          </div>
+          <div>
+            { isEditorActive &&
             <AceEditor
               ref={(editor) => { this.editor = editor; }}
               style={{ width: '100%', height: '100%' }}
@@ -96,13 +113,20 @@ class NoteDisplay extends React.Component {
               name="editor"
               value={currentNote}
             />
-          }
+            }
+          </div>
+          <PageFlip
+            active={isPageFlipActive}
+            onClick={this.onPageFlip}
+          />
+          <div className={classNames(classes.actions, { [classes.hidden]: !isActionMenuActive })}>
+            <IconButton>
+              <ActionDelete onClick={onDeleteNote} />
+            </IconButton>
+          </div>
+
         </div>
-        <PageFlip
-          active={isPageFlipActive}
-          onClick={this.onPageFlip}
-        />
-      </div>
+      </Theme>
     );
   }
 }

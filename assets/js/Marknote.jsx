@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
 import NoteList from './NoteList';
 import NoteDisplay from './NoteDisplay';
+import connect from './helpers/connect';
+import reducers from './reducers';
+import { updateNote, addNote, updateCurrentNote, deleteCurrentNote } from './actions';
 
 const styles = {
   '@global': {
@@ -20,7 +23,7 @@ const styles = {
   },
 };
 
-class Marknote extends React.PureComponent {
+class Marknote extends React.Component {
   constructor(props) {
     super(props);
 
@@ -29,15 +32,11 @@ class Marknote extends React.PureComponent {
       selected: 0,
     };
 
-    this.updateNote = this.updateNote.bind(this);
+    this.dispatch = connect(() => this.state, this.setState.bind(this), reducers);
   }
 
-  updateNote(newContent) {
-    const newNotes = this.state.notes.slice();
-    newNotes[this.state.selected] = newContent;
-    newNotes.splice(0, 0, newNotes.splice(this.state.selected, 1)[0]);
-    this.setState({ notes: newNotes, selected: 0 });
-    this.props.onUpdate(newNotes);
+  componentWillUpdate(nextProps, nextState) {
+    this.props.onUpdate(nextState.notes);
   }
 
   render() {
@@ -48,11 +47,13 @@ class Marknote extends React.PureComponent {
         <NoteList
           notes={notes}
           selected={selected}
-          onSelect={selectedIndex => this.setState({ selected: selectedIndex })}
+          onSelect={selectedIndex => this.dispatch(updateCurrentNote(selectedIndex))}
+          onNewNote={() => this.dispatch(addNote())}
         />
         <NoteDisplay
           note={notes[selected]}
-          onUpdate={this.updateNote}
+          onUpdate={newContent => this.dispatch(updateNote(newContent))}
+          onDeleteNote={() => this.dispatch(deleteCurrentNote())}
         />
       </div>
     );
