@@ -1,14 +1,16 @@
 const initialState = { notes: [], selected: 0 };
 const newNoteTemplate = '# New note';
+// Allow adjusting merge method.
+const returnState = (state, changes) => changes;
 
 const notesApp = (state = initialState, action) => {
   switch (action.type) {
     case 'UPDATE_CURRENT_NOTE':
-      return Object.assign(state, { selected: action.index });
+      return returnState(state, { selected: action.index });
     case 'NEW_NOTE': {
       const newNotes = state.notes.slice();
       newNotes.unshift(newNoteTemplate);
-      return Object.assign(state, {
+      return returnState(state, {
         notes: newNotes,
         selected: 0,
       });
@@ -17,12 +19,12 @@ const notesApp = (state = initialState, action) => {
       const newNotes = state.notes.slice();
       newNotes[state.selected] = action.note;
       newNotes.splice(0, 0, newNotes.splice(state.selected, 1)[0]);
-      return Object.assign(state, { notes: newNotes, selected: 0 });
+      return returnState(state, { notes: newNotes, selected: 0 });
     }
     case 'DUPLICATE_CURRENT_NOTE': {
       const newNotes = state.notes.slice();
       newNotes.unshift(state.notes[state.selected]);
-      return Object.assign(state, {
+      return returnState(state, {
         notes: newNotes,
         selected: 0,
       });
@@ -42,7 +44,7 @@ const notesApp = (state = initialState, action) => {
         newNotes.push(newNoteTemplate);
         selected = 0;
       }
-      return Object.assign(state, { selected, notes: newNotes });
+      return returnState(state, { selected, notes: newNotes });
     }
     default:
       return state;

@@ -1,9 +1,9 @@
-const updateNote = note => ({
+const updateCurrentNote = note => ({
   type: 'UPDATE_NOTE',
   note,
 });
 
-const updateCurrentNote = index => ({
+const updateSelectedNote = index => ({
   type: 'UPDATE_CURRENT_NOTE',
   index,
 });
@@ -14,9 +14,9 @@ const duplicateCurrentNote = () => ({ type: 'DUPLICATE_CURRENT_NOTE' });
 
 /* eslint-disable import/prefer-default-export */
 export {
-  updateNote,
-  addNote,
   updateCurrentNote,
+  addNote,
+  updateSelectedNote,
   deleteCurrentNote,
   duplicateCurrentNote,
 };

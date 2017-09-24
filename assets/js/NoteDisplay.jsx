@@ -124,7 +124,6 @@ class NoteDisplay extends React.Component {
               tabIndex="-1"
               className={classNames(classes.note, { [classes.hidden]: isEditorActive })}
               ref={(display) => { this.display = display; }}
-
             >
               <ReactMarkdown source={currentNote} />
             </div>

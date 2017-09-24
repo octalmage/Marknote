@@ -5,7 +5,13 @@ import NoteList from './NoteList';
 import NoteDisplay from './NoteDisplay';
 import connect from './helpers/connect';
 import reducers from './reducers';
-import { updateNote, addNote, updateCurrentNote, deleteCurrentNote, duplicateCurrentNote } from './actions';
+import {
+  updateCurrentNote,
+  addNote,
+  updateSelectedNote,
+  deleteCurrentNote,
+  duplicateCurrentNote,
+} from './actions';
 
 const styles = {
   '@global': {
@@ -50,12 +56,12 @@ class Marknote extends React.Component {
         <NoteList
           notes={notes}
           selected={selected}
-          onSelect={selectedIndex => this.dispatch(updateCurrentNote(selectedIndex))}
+          onSelect={selectedIndex => this.dispatch(updateSelectedNote(selectedIndex))}
           onNewNote={() => this.dispatch(addNote())}
         />
         <NoteDisplay
           note={notes[selected]}
-          onUpdate={newContent => this.dispatch(updateNote(newContent))}
+          onUpdate={newContent => this.dispatch(updateCurrentNote(newContent))}
           onDeleteNote={() => this.dispatch(deleteCurrentNote())}
           onDuplicateNote={() => this.dispatch(duplicateCurrentNote())}
         />

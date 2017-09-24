@@ -13,13 +13,13 @@ const connect = (getState, setState, reducers) => {
    * @return {Promise}       The result of the action in Promise form.
    */
   const dispatch = (action) => {
-    // Call the action and either get the new state, or a function.
-    const next = reducers(getState(), action);
-
     // Support async actions.
-    if (typeof next === 'function') {
-      return next(dispatch, getState);
+    if (typeof action === 'function') {
+      return action(dispatch, getState);
     }
+
+    // Call the reducer and either get the new state, or a function.
+    const next = reducers(getState(), action);
 
     // Set the state and resolve once the state has been set.
     return new Promise(resolve => setState(() => next, resolve));
