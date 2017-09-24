@@ -38,6 +38,7 @@
     "react-ace": "^5.2.0",
     "react-dom": "^15.6.1",
     "react-hot-loader": "^3.0.0-beta.7",
+    "react-hotkeys": "^0.10.0",
     "react-jss": "^7.1.0",
     "react-markdown": "^2.5.0",
     "recompose": "^0.25.0"

@@ -5,7 +5,7 @@ import NoteList from './NoteList';
 import NoteDisplay from './NoteDisplay';
 import connect from './helpers/connect';
 import reducers from './reducers';
-import { updateNote, addNote, updateCurrentNote, deleteCurrentNote } from './actions';
+import { updateNote, addNote, updateCurrentNote, deleteCurrentNote, duplicateCurrentNote } from './actions';
 
 const styles = {
   '@global': {
@@ -15,6 +15,9 @@ const styles = {
       margin: '0',
       overflow: 'hidden',
       fontFamily: "'RobotoDraft', sans-serif",
+      boxSizing: 'border-box',
+    },
+    '*': {
       boxSizing: 'border-box',
     },
     wrapper: {
@@ -54,6 +57,7 @@ class Marknote extends React.Component {
           note={notes[selected]}
           onUpdate={newContent => this.dispatch(updateNote(newContent))}
           onDeleteNote={() => this.dispatch(deleteCurrentNote())}
+          onDuplicateNote={() => this.dispatch(duplicateCurrentNote())}
         />
       </div>
     );

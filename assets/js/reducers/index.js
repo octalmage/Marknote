@@ -1,4 +1,5 @@
 const initialState = { notes: [], selected: 0 };
+const newNoteTemplate = '# New note';
 
 const notesApp = (state = initialState, action) => {
   switch (action.type) {
@@ -6,7 +7,7 @@ const notesApp = (state = initialState, action) => {
       return Object.assign(state, { selected: action.index });
     case 'NEW_NOTE': {
       const newNotes = state.notes.slice();
-      newNotes.unshift('# New note');
+      newNotes.unshift(newNoteTemplate);
       return Object.assign(state, {
         notes: newNotes,
         selected: 0,
@@ -18,13 +19,28 @@ const notesApp = (state = initialState, action) => {
       newNotes.splice(0, 0, newNotes.splice(state.selected, 1)[0]);
       return Object.assign(state, { notes: newNotes, selected: 0 });
     }
+    case 'DUPLICATE_CURRENT_NOTE': {
+      const newNotes = state.notes.slice();
+      newNotes.unshift(state.notes[state.selected]);
+      return Object.assign(state, {
+        notes: newNotes,
+        selected: 0,
+      });
+    }
     case 'DELETE_CURRENT_NOTE': {
-      console.log('delete');
       const newNotes = state.notes.slice();
       newNotes.splice(state.selected, 1);
       let selected = state.selected;
-      if (selected > (state.notes.length - 1)) {
+
+      // If the selected note is longer than the length of notes, select the previous item
+      if (selected > (newNotes.length - 1)) {
         selected -= 1;
+      }
+
+      // If there are no notes, add a new note.
+      if (newNotes.length === 0) {
+        newNotes.push(newNoteTemplate);
+        selected = 0;
       }
       return Object.assign(state, { selected, notes: newNotes });
     }

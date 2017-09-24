@@ -13,6 +13,7 @@ const styles = {
     height: '100%',
     position: 'absolute',
     paddingTop: '10px',
+    overflow: 'auto',
   },
   floatingButton: {
     position: 'fixed',

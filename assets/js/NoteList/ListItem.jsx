@@ -16,6 +16,7 @@ const styles = {
     backgroundColor: '#545454',
     userSelect: 'none',
     outline: 0,
+    cursor: 'pointer',
   },
   active: {
     backgroundColor: '#F6D503',

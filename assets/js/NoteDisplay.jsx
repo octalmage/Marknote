@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
 import ReactMarkdown from 'react-markdown';
 import classNames from 'classnames';
+import { HotKeys } from 'react-hotkeys';
 import IconButton from 'material-ui/IconButton';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
+import ContentCopy from 'material-ui/svg-icons/content/content-copy';
 import Theme from 'material-ui/styles/MuiThemeProvider';
 import brace from 'brace'; // eslint-disable-line no-unused-vars
 import AceEditor from 'react-ace';
@@ -19,6 +21,7 @@ const styles = {
     right: '0px',
     top: '0px',
     bottom: '0px',
+    overflow: 'auto',
     '& #editor': {
       position: 'absolute',
       left: '0',
@@ -32,12 +35,16 @@ const styles = {
   },
   note: {
     padding: '0 10px',
+    outline: '0',
   },
   actions: {
     position: 'fixed',
     top: '0px',
     right: '0px',
     zIndex: '5',
+  },
+  actionButtons: {
+    float: 'right',
   },
 };
 
@@ -54,6 +61,10 @@ class NoteDisplay extends React.Component {
 
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onPageFlip = this.onPageFlip.bind(this);
+  }
+
+  componentDidMount() {
+    this.display.focus();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -84,49 +95,70 @@ class NoteDisplay extends React.Component {
         // Focus the editor on display.
         this.editor.editor.focus();
       } else {
+        this.display.focus();
         this.props.onUpdate(this.state.currentNote);
       }
     });
   }
 
   render() {
-    const { classes, onDeleteNote } = this.props;
+    const { classes, onDeleteNote, onDuplicateNote } = this.props;
     const { isPageFlipActive, isEditorActive, currentNote, isActionMenuActive } = this.state;
-    return (
-      <Theme>
-        <div
-          className={classes.notedisplay}
-          onMouseMove={e => this.onMouseMove({ x: e.pageX, y: e.pageY })}
-        >
-          <div className={classNames(classes.note, { [classes.hidden]: isEditorActive })}>
-            <ReactMarkdown source={currentNote} />
-          </div>
-          <div>
-            { isEditorActive &&
-            <AceEditor
-              ref={(editor) => { this.editor = editor; }}
-              style={{ width: '100%', height: '100%' }}
-              mode="markdown"
-              theme="github"
-              showPrintMargin={false}
-              onChange={newContent => this.setState({ currentNote: newContent })}
-              name="editor"
-              value={currentNote}
-            />
-            }
-          </div>
-          <PageFlip
-            active={isPageFlipActive}
-            onClick={this.onPageFlip}
-          />
-          <div className={classNames(classes.actions, { [classes.hidden]: !isActionMenuActive })}>
-            <IconButton>
-              <ActionDelete onClick={onDeleteNote} />
-            </IconButton>
-          </div>
 
-        </div>
-      </Theme>
+    const keyMap = {
+      toggleEditor: ['command+enter', 'esc'],
+    };
+
+    const handlers = {
+      toggleEditor: () => this.onPageFlip(),
+    };
+
+    return (
+      <HotKeys keyMap={keyMap} handlers={handlers}>
+        <Theme>
+          <div
+            className={classes.notedisplay}
+            onMouseMove={e => this.onMouseMove({ x: e.pageX, y: e.pageY })}
+          >
+            <div
+              tabIndex="-1"
+              className={classNames(classes.note, { [classes.hidden]: isEditorActive })}
+              ref={(display) => { this.display = display; }}
+
+            >
+              <ReactMarkdown source={currentNote} />
+            </div>
+            <div>
+              { isEditorActive &&
+              <AceEditor
+                ref={(editor) => { this.editor = editor; }}
+                style={{ width: '100%', height: '100%' }}
+                mode="markdown"
+                theme="github"
+                showPrintMargin={false}
+                onChange={newContent => this.setState({ currentNote: newContent })}
+                name="editor"
+                value={currentNote}
+                editorProps={{ $blockScrolling: true }}
+              />
+              }
+            </div>
+            <PageFlip
+              active={isPageFlipActive}
+              onClick={this.onPageFlip}
+            />
+            <div className={classNames(classes.actions, { [classes.hidden]: !isActionMenuActive })}>
+              <IconButton className={classes.actionButtons}>
+                <ActionDelete onClick={onDeleteNote} />
+              </IconButton>
+              <IconButton className={classes.actionButtons}>
+                <ContentCopy onClick={onDuplicateNote} />
+              </IconButton>
+            </div>
+
+          </div>
+        </Theme>
+      </HotKeys>
     );
   }
 }
@@ -138,6 +170,8 @@ NoteDisplay.propTypes = {
   }).isRequired,
   note: PropTypes.string.isRequired,
   onUpdate: PropTypes.func.isRequired,
+  onDeleteNote: PropTypes.func.isRequired,
+  onDuplicateNote: PropTypes.func.isRequired,
 };
 
 export default injectSheet(styles)(NoteDisplay);
