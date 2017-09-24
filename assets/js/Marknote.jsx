@@ -44,6 +44,11 @@ class Marknote extends React.Component {
     this.dispatch = connect(() => this.state, this.setState.bind(this), reducers);
   }
 
+  componentWillMount() {
+    // Function for importing notes.
+    window.MarknoteImportNotes = notes => this.setState({ notes });
+  }
+
   componentWillUpdate(nextProps, nextState) {
     this.props.onUpdate(nextState.notes);
   }
