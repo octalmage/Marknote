@@ -5,7 +5,11 @@ import Store from 'electron-store';
 
 const store = new Store();
 const defaultnote = ['# Welcome to Marknote!\n**This is markdown.** Click the bottom right corner to get started.'];
-const notes = store.get('notes', defaultnote);
+let notes = store.get('notes', defaultnote).filter(n => n);
+
+if (!Array.isArray(notes)) {
+  notes = defaultnote;
+}
 
 const render = () => {
   // NB: We have to re-require MyApp every time or else this won't work
