@@ -8,6 +8,11 @@ const updateSelectedNote = index => ({
   index,
 });
 
+const updateSearchTerm = searchTerm => ({
+  type: 'UPDATE_SEARCH_TERM',
+  searchTerm,
+});
+
 const deleteCurrentNote = () => ({ type: 'DELETE_CURRENT_NOTE' });
 const addNote = () => ({ type: 'NEW_NOTE' });
 const duplicateCurrentNote = () => ({ type: 'DUPLICATE_CURRENT_NOTE' });
@@ -19,5 +24,6 @@ export {
   updateSelectedNote,
   deleteCurrentNote,
   duplicateCurrentNote,
+  updateSearchTerm,
 };
 /* eslint-enable  import/prefer-default-export */

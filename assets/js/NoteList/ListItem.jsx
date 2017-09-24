@@ -22,14 +22,20 @@ const styles = {
     backgroundColor: '#F6D503',
     color: '#333333',
   },
+  hidden: {
+    display: 'none',
+  },
 };
 
-const ListItem = ({ classes, children, selected, onClick }) => (
+const ListItem = ({ classes, children, selected, onClick, hidden }) => (
   <div
     onMouseDown={onClick}
     role="menuitem"
     tabIndex="-1"
-    className={classNames(classes.listitem, { [classes.active]: selected })}
+    className={classNames(classes.listitem, {
+      [classes.active]: selected,
+      [classes.hidden]: hidden,
+    })}
   >
     {children}
   </div>

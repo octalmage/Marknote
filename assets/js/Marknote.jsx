@@ -11,6 +11,7 @@ import {
   updateSelectedNote,
   deleteCurrentNote,
   duplicateCurrentNote,
+  updateSearchTerm,
 } from './actions';
 
 const styles = {
@@ -39,9 +40,12 @@ class Marknote extends React.Component {
     this.state = {
       notes: props.notes,
       selected: 0,
+      searchTerm: '',
     };
 
     this.dispatch = connect(() => this.state, this.setState.bind(this), reducers);
+    this.updateSelectedNote = selectedIndex => this.dispatch(updateSelectedNote(selectedIndex));
+    this.updateSearchTerm = searchTerm => this.dispatch(updateSearchTerm(searchTerm));
   }
 
   componentWillMount() {
@@ -54,15 +58,27 @@ class Marknote extends React.Component {
   }
 
   render() {
-    const { notes, selected } = this.state;
+    const { notes, selected, searchTerm } = this.state;
     const { classes } = this.props;
+
+    const notesHash = notes.map((note, i) => ({ note, id: i }));
+
+    const hiddenNotes = searchTerm !== ''
+      ? notesHash.filter(note => !note.note.toLowerCase()
+        .includes(searchTerm.toLowerCase()))
+        .map(note => note.id)
+      : [];
+
     return (
       <div className={classes.marknote}>
         <NoteList
-          notes={notes}
+          notes={notesHash}
           selected={selected}
-          onSelect={selectedIndex => this.dispatch(updateSelectedNote(selectedIndex))}
+          onSelect={this.updateSelectedNote}
           onNewNote={() => this.dispatch(addNote())}
+          searchTerm={searchTerm}
+          hiddenNotes={hiddenNotes}
+          updateSearchTerm={this.updateSearchTerm}
         />
         <NoteDisplay
           note={notes[selected]}

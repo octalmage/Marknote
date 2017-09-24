@@ -6,7 +6,7 @@ const returnState = (state, changes) => changes;
 const notesApp = (state = initialState, action) => {
   switch (action.type) {
     case 'UPDATE_CURRENT_NOTE':
-      return returnState(state, { selected: action.index });
+      return returnState(state, { selected: action.index, searchTerm: '' });
     case 'NEW_NOTE': {
       const newNotes = state.notes.slice();
       newNotes.unshift(newNoteTemplate);
@@ -27,6 +27,11 @@ const notesApp = (state = initialState, action) => {
       return returnState(state, {
         notes: newNotes,
         selected: 0,
+      });
+    }
+    case 'UPDATE_SEARCH_TERM': {
+      return returnState(state, {
+        searchTerm: action.searchTerm,
       });
     }
     case 'DELETE_CURRENT_NOTE': {
