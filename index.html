@@ -1,86 +1,17 @@
-﻿<!doctype html>
+<!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Marknote</title>
 
-<head>
-  <title>Marknote</title>
-  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400|Roboto" rel="stylesheet">
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
 
-  <!-- Code Themes. -->
-  <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css">
-  <!--<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/monokai.min.css">-->
-
-  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-
-  <link rel="stylesheet" href="assets/css/style.css">
-
-  <!-- Scripts. -->
-  <script src="assets/components/platform/platform.js"></script>
-  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-  <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-  <script src="assets/js/lawnchair.js"></script>
-  <script src="http://cdn.craig.is/js/mousetrap/mousetrap.min.js"> </script>
-  <script src="assets/js/jquery.nearest.js"></script>
-  <script src="assets/js/jquery.blockUI.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
-  <script src="assets/js/underscore.js"></script>
-  <script src="assets/js/app.js"></script>
-
-  <!-- Polymer Imports. -->
-  <link rel="import" href="assets/components/polymer/polymer.html">
-  <link rel="import" href="assets/components/font-roboto/roboto.html">
-  <link rel="import" href="assets/components/core-icons/core-icons.html">
-  <link rel="import" href="assets/components/paper-fab/paper-fab.html">
-  <link rel="import" href="assets/components/paper-icon-button/paper-icon-button.html">
-  <link rel="import" href="assets/components/paper-fab/paper-fab.html">
-
-  <!-- Custom Elements. -->
-  <link rel="import" href="assets/elements/list-item.html">
-</head>
-
-<body unresolved touch-action="auto">
-<div style='position: fixed; bottom: 25px;  left:135px; z-index: 5;'><paper-fab id="newNote" icon="create" class="blue mini"></paper-fab></div>
-<div id="list">
-</div>
-  <div id="note">
-
-  <div id="display">
-  </div>
-
-  <div id="edit">
-  </div>
-
-
-  </div>
-<script src="assets/js/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-<script>
-    editor = ace.edit("edit");
-    editor.setTheme("ace/theme/github");
-    editor.getSession().setMode("ace/mode/markdown");
-    editor.setShowPrintMargin(false);
-    editor.getSession().setUseWrapMode(true);
-    </script>
-
-<div id="actions">
-<paper-icon-button icon="content-copy"></paper-icon-button><paper-icon-button icon="close"></paper-icon-button><paper-icon-button icon="menu"></paper-icon-button>
-</div>
-
-<div id="pageflip">
-
-</div>
-
-<div id="find">
-<input class="mousetrap" type="text" id="findtext">
-</div>
-
-  <div id="settings" style="display:none; padding:10px; text-align:left; border:none;">
-    <h3>Settings</h3><br>
-    Editor word wrap <input id="wrap" type="checkbox"><br>
-    Syncing <input id="syncing" type="checkbox"><br>
-    <input type="text" id="username" placeholder="Email:" ><br>
-    <input type="password" id="password" placeholder="Password:" style="margin-top:10px;"><br>
-    <button type="button" id="saveButton" class="btn btn-info btn-xs" style="margin-top:10px;">Save</button>
-
-  </div>
-
-</body>
+  <script>
+    // You can also require other files to run in this process
+    require('./assets/js/App.jsx')
+  </script>
 </html>
