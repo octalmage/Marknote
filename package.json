@@ -41,6 +41,7 @@
     "react-hotkeys": "^0.10.0",
     "react-jss": "^7.1.0",
     "react-markdown": "^2.5.0",
+    "react-modal": "^2.3.2",
     "recompose": "^0.25.0"
   },
   "devDependencies": {

@@ -4,15 +4,18 @@ import injectSheet from 'react-jss';
 import ReactMarkdown from 'react-markdown';
 import classNames from 'classnames';
 import { HotKeys } from 'react-hotkeys';
+import Modal from 'react-modal';
 import IconButton from 'material-ui/IconButton';
-import ActionDelete from 'material-ui/svg-icons/action/delete';
-import ContentCopy from 'material-ui/svg-icons/content/content-copy';
+import DeleteIcon from 'material-ui/svg-icons/action/delete';
+import CopyIcon from 'material-ui/svg-icons/content/content-copy';
+import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import Theme from 'material-ui/styles/MuiThemeProvider';
 import brace from 'brace'; // eslint-disable-line no-unused-vars
 import AceEditor from 'react-ace';
 import 'brace/mode/markdown';
 import 'brace/theme/github';
 import PageFlip from './NoteDisplay/PageFlip';
+import Settings from './NoteDisplay/Settings';
 
 const styles = {
   notedisplay: {
@@ -55,6 +58,15 @@ const styles = {
   actionButtons: {
     float: 'right',
   },
+  modalOverlay: {
+    zIndex: '10',
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(255, 255, 255, 0.75)',
+  },
 };
 
 class NoteDisplay extends React.Component {
@@ -66,10 +78,13 @@ class NoteDisplay extends React.Component {
       isActionMenuActive: false,
       isEditorActive: false,
       currentNote: props.note,
+      isModalActive: false,
     };
 
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onPageFlip = this.onPageFlip.bind(this);
+    this.onMenuClick = this.onMenuClick.bind(this);
+    this.onSave = this.onSave.bind(this);
   }
 
   componentDidMount() {
@@ -110,9 +125,23 @@ class NoteDisplay extends React.Component {
     });
   }
 
+  onMenuClick() {
+    this.setState({ isModalActive: true });
+  }
+
+  onSave() {
+    this.setState({ isModalActive: false });
+  }
+
   render() {
     const { classes, onDeleteNote, onDuplicateNote } = this.props;
-    const { isPageFlipActive, isEditorActive, currentNote, isActionMenuActive } = this.state;
+    const {
+      isPageFlipActive,
+      isEditorActive,
+      currentNote,
+      isActionMenuActive,
+      isModalActive,
+    } = this.state;
 
     const keyMap = {
       toggleEditor: ['command+enter', 'esc'],
@@ -157,13 +186,26 @@ class NoteDisplay extends React.Component {
             />
             <div className={classNames(classes.actions, { [classes.hidden]: !isActionMenuActive })}>
               <IconButton className={classes.actionButtons}>
-                <ActionDelete onClick={onDeleteNote} />
+                <MenuIcon onClick={this.onMenuClick} />
               </IconButton>
               <IconButton className={classes.actionButtons}>
-                <ContentCopy onClick={onDuplicateNote} />
+                <DeleteIcon onClick={onDeleteNote} />
+              </IconButton>
+              <IconButton className={classes.actionButtons}>
+                <CopyIcon onClick={onDuplicateNote} />
               </IconButton>
             </div>
 
+            <Modal
+              isOpen={isModalActive}
+              contentLabel="Settings"
+              overlayClassName={{ base: classes.modalOverlay }}
+              styles={{ overlay: styles.modalOverlay }}
+            >
+              <Settings
+                onSave={this.onSave}
+              />
+            </Modal>
           </div>
         </Theme>
       </HotKeys>
