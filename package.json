@@ -42,7 +42,9 @@
     "react-jss": "^7.1.0",
     "react-markdown": "^2.5.0",
     "react-modal": "^2.3.2",
-    "recompose": "^0.25.0"
+    "recompose": "^0.25.0",
+    "remarkable": "^1.7.1",
+    "reselect": "^3.0.1"
   },
   "devDependencies": {
     "electron-prebuilt-compile": "^1.7.6",

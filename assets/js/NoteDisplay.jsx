@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import injectSheet from 'react-jss';
-import ReactMarkdown from 'react-markdown';
+// import ReactMarkdown from 'react-markdown';
+import { createSelector } from 'reselect';
 import classNames from 'classnames';
 import { HotKeys } from 'react-hotkeys';
 import Modal from 'react-modal';
+import Remarkable from 'remarkable';
 import IconButton from 'material-ui/IconButton';
 import DeleteIcon from 'material-ui/svg-icons/action/delete';
 import CopyIcon from 'material-ui/svg-icons/content/content-copy';
@@ -16,6 +18,30 @@ import 'brace/mode/markdown';
 import 'brace/theme/github';
 import PageFlip from './NoteDisplay/PageFlip';
 import Settings from './NoteDisplay/Settings';
+
+const md = new Remarkable({
+  html: true,
+  xhtmlOut: true,
+  linkify: true,
+})
+  .use((md) => {
+    const list_item_open = md.renderer.rules.list_item_open;
+    md.renderer.rules.list_item_open = (tokens, id, ...args) => {
+      const inlineToken = tokens[id + 2];
+      if (inlineToken.type === 'inline' && /^\s*\[[x ]\]\s*/.test(inlineToken.content)) {
+        const content = `${inlineToken.content}<br />`
+          .replace(/^\s*\[ \]\s*/, '<input type="checkbox" class="task-list-item-checkbox"> ')
+          .replace(/^\s*\[x\]\s*/, '<input type="checkbox" class="task-list-item-checkbox" checked> ');
+        inlineToken.content = content;
+        inlineToken.children[0].content = content;
+        inlineToken.children[0].type = 'htmltag';
+        tokens[id + 2] = inlineToken;
+        return '';
+      }
+
+      return list_item_open(...args);
+    };
+  });
 
 const styles = {
   notedisplay: {
@@ -48,6 +74,7 @@ const styles = {
       wordWrap: 'break-word',
       whiteSpace: 'pre-wrap',
     },
+
   },
   actions: {
     position: 'fixed',
@@ -70,6 +97,21 @@ const styles = {
 };
 
 class NoteDisplay extends React.Component {
+  static renderHtml(markdown) {
+    const convertCheckboxes = (text) => {
+      if (/^\s*\[[x ]\]\s*/.test(text)) {
+        const checkbox = text
+          .replace(/^\s*\[ \]\s*/, '<input type="checkbox" class="task-list-item-checkbox"> ')
+          .replace(/^\s*\[x\]\s*/, '<input type="checkbox" class="task-list-item-checkbox" checked> ');
+        return `<li style="list-style: none; display: list-item;">${checkbox}</li>`;
+      }
+
+      return `<li>${text}</li>`;
+    };
+
+    return { __html: md.render(markdown) };
+  }
+
   constructor(props) {
     super(props);
 
@@ -80,6 +122,11 @@ class NoteDisplay extends React.Component {
       currentNote: props.note,
       isModalActive: false,
     };
+
+    this.currentNoteHtmlSelector = createSelector(
+      state => state.currentNote,
+      currentNote => NoteDisplay.renderHtml(currentNote),
+    );
 
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onPageFlip = this.onPageFlip.bind(this);
@@ -163,7 +210,8 @@ class NoteDisplay extends React.Component {
               className={classNames(classes.note, { [classes.hidden]: isEditorActive })}
               ref={(display) => { this.display = display; }}
             >
-              <ReactMarkdown source={currentNote} />
+              {/* <ReactMarkdown source={currentNote} /> */}
+              <div dangerouslySetInnerHTML={this.currentNoteHtmlSelector(this.state)} />
             </div>
             <div>
               { isEditorActive &&
