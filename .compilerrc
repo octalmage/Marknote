@@ -1,0 +1,6 @@
+{
+  "application/javascript": {
+    "presets": ["react", "es2017-node7"],
+    "plugins": ["react-hot-loader/babel", "transform-async-to-generator"]
+  }
+}
